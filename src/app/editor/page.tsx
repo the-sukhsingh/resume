@@ -8,6 +8,7 @@ import { ResizablePanels } from '@/components/resume/ResizablePanels';
 import { Save, Download } from 'lucide-react';
 import { generatePDF } from '@/lib/pdf-generator';
 import { Button } from '@/components/ui/button';
+import { generatePdf } from '@/lib/canvas-based-pdf';
 
 const STORAGE_KEY = 'resume-data';
 
@@ -43,7 +44,7 @@ const EditorPage = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
   const [isDownloading, setIsDownloading] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<'classic' | 'designer'>('designer');
+  const [currentTheme, setCurrentTheme] = useState<'classic' | 'designer' | 'vercel'>('designer');
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -78,18 +79,6 @@ const EditorPage = () => {
     setSaveStatus('saving');
   };
 
-  const handleDownloadPDF = async () => {
-    setIsDownloading(true);
-    try {
-      const filename = `${resumeData.personalInfo.fullName || 'resume'}_${currentTheme}.pdf`;
-      await generatePDF(resumeData, currentTheme, filename);
-    } catch (error) {
-      console.error('Failed to generate PDF:', error);
-      alert('Failed to generate PDF. Please try again.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
 
   return (
     <div className="h-screen flex flex-col bg-muted p-2 ">
@@ -112,7 +101,7 @@ const EditorPage = () => {
       </header>
 
       {/* Actions */}
-      <div className='bg-background flex items-center justify-between py-6 border-b border-x px-4'>
+      <div className='bg-background flex items-center justify-between py-3 border-b border-x px-4'>
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Theme:</span>
           <Button
@@ -129,9 +118,18 @@ const EditorPage = () => {
           >
             Classic
           </Button>
+          <Button
+            onClick={() => setCurrentTheme('vercel')}
+            variant={currentTheme === 'vercel' ? 'default' : 'outline'}
+            size="sm"
+          >
+            Vercel
+          </Button>
         </div>
          <Button
-            onClick={handleDownloadPDF}
+            onClick={() => {
+              alert("Upcoming Feature")
+            }}
             disabled={isDownloading}
             variant="default"
             size="sm"

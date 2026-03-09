@@ -46,7 +46,7 @@ const DesignerPreview: React.FC<DesignerProps> = ({ data }) => {
             <div id="resume-preview-designer" className="mx-auto max-w-[8.5in] bg-[#e8e4d8d6] shadow-[0_2px_8px_rgba(0,0,0,0.08)] scale-90 px-12 py-6 origin-top">
                 {/* Header */}
                 <header className="mb-8">
-                    <h1 className="text-8xl text-center whitespace-nowrap font-cormorant font-bold mb-1 tracking-tight leading-none">
+                    <h1 className="text-8xl text-center font-cormorant font-bold mb-1 tracking-tight leading-none">
                         {personalInfo.fullName || "Morgan Maxwell"}
                     </h1>
                     <div className="flex justify-between items-center text-xs uppercase tracking-wider font-league-spartan font-semibold">

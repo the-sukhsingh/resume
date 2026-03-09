@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Playfair_Display, Libre_Baskerville, Cormorant_Garamond, League_Spartan, Montserrat, Inter,  } from "next/font/google";
+import { DM_Sans, Playfair_Display, Libre_Baskerville, Cormorant_Garamond, League_Spartan, Montserrat, Inter, Geist, Geist_Mono,  } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { ModeToggle } from "@/components/theme/ThemeToggle";
@@ -44,7 +44,20 @@ const montserrat = Montserrat({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300","400","500","600"]
+  weight: ["300", "400", "500", "600", "700"],
+})
+
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+
+})
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets:["latin"],
+    weight: ["300", "400", "500", "600", "700"],
 })
 
 
@@ -61,7 +74,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dmSans.variable} ${playfair.variable} ${libreBaskerville.variable} ${cormorantGaramond.variable} ${leagueSpartan.variable} ${montserrat.variable} ${inter.variable} antialiased`}
+        className={`${dmSans.variable} ${playfair.variable} ${libreBaskerville.variable} ${cormorantGaramond.variable} ${leagueSpartan.variable} ${montserrat.variable} ${inter.variable} ${geist.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
           <div className="fixed top-2 right-2">

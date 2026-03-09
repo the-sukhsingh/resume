@@ -9,191 +9,227 @@ interface ClassicPreviewProps {
 
 export const ClassicPreview: React.FC<ClassicPreviewProps> = ({ data }) => {
   return (
-    <div className="h-full overflow-y-auto nobar overscroll-none bg-stone-50 p-8">
-      <div id="resume-preview-classic" className="mx-auto max-w-[8.5in] bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] p-12">
+    <div className="h-full overflow-y-auto bg-neutral-100 p-4 sm:p-8">
+      <div
+        id="resume-preview-classic"
+        className="mx-auto max-w-204 bg-white p-10 sm:p-16 shadow-sm font-sans"
+      >
         {/* Header */}
-        <header className="border-b border-stone-200 pb-6 mb-8">
-          <h1 className="font-sans text-4xl font-bold text-neutral-900 mb-3 tracking-tight">
+        <header className="mb-10 text-center">
+          <h1 className="text-3xl font-medium tracking-tight text-neutral-900 mb-1">
             {data.personalInfo.fullName || 'Your Name'}
           </h1>
           {data.personalInfo.headline && (
-            <h2>
+            <p className="text-sm font-medium tracking-wide text-neutral-500 uppercase mb-4">
               {data.personalInfo.headline}
-            </h2>
+            </p>
           )}
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-primary/90">
-            {data.social.email && (
-              <span>{data.social.email}</span>
-            )}
-            {data.personalInfo.phone && (
-              <span>{data.personalInfo.phone}</span>
-            )}
-            {data.personalInfo.location && (
-              <span>{data.personalInfo.location}</span>
-            )}
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-blue-700 mt-2">
-            {data.social.website && (
-              <a href={data.social.website} className="hover:underline">
-                {data.social.website}
-              </a>
-            )}
-            {data.social.linkedin && (
-              <a href={data.social.linkedin} className="hover:underline">
-                LinkedIn
-              </a>
-            )}
-            {data.social.github && (
-              <a href={data.social.github} className="hover:underline">
-                GitHub
-              </a>
-            )}
+          
+          <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-2 text-xs text-neutral-500">
+            {[
+              data.social.email && (
+                <a key="email" href={`mailto:${data.social.email}`} className="hover:text-neutral-900 transition-colors">
+                  {data.social.email}
+                </a>
+              ),
+              data.personalInfo.phone && (
+                <span key="phone">{data.personalInfo.phone}</span>
+              ),
+              data.social.website && (
+                <a key="website" href={data.social.website} target="_blank" rel="noreferrer" className="hover:text-neutral-900 transition-colors">
+                  Portfolio
+                </a>
+              ),
+              data.social.linkedin && (
+                <a key="linkedin" href={data.social.linkedin} target="_blank" rel="noreferrer" className="hover:text-neutral-900 transition-colors">
+                  LinkedIn
+                </a>
+              ),
+              data.social.github && (
+                <a key="github" href={data.social.github} target="_blank" rel="noreferrer" className="hover:text-neutral-900 transition-colors">
+                  GitHub
+                </a>
+              ),
+            ]
+              .filter(Boolean)
+              .map((item, index, array) => (
+                <React.Fragment key={index}>
+                  {item}
+                  {index < array.length - 1 && (
+                    <span className="text-neutral-300 select-none">•</span>
+                  )}
+                </React.Fragment>
+              ))}
           </div>
         </header>
 
-        {/* Summary */}
-        {data.summary && (
-          <section className="mb-8">
-            <h2 className="font-sans text-xl font-semibold text-neutral-900 mb-3 border-b border-neutral-600 pb-1">
-              Professional Summary
-            </h2>
-            <p className="text-neutral-700 leading-relaxed">
-              {data.summary}
-            </p>
-          </section>
-        )}
+        <div className="space-y-8">
+          {/* Summary */}
+          {data.summary && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-3 pb-2 border-b border-neutral-200">
+                Professional Summary
+              </h2>
+              <p className="text-sm text-neutral-700 leading-relaxed">
+                {data.summary}
+              </p>
+            </section>
+          )}
 
-        {/* Experience */}
-        {data.experience.length > 0 && (
-          <section className="mb-8">
-            <h2 className="font-sans text-xl font-semibold text-neutral-900 mb-4 border-b border-neutral-600 pb-1">
-              Experience
-            </h2>
-            <div className="space-y-6">
-              {data.experience.map((exp) => (
-                <div key={exp.id}>
-                  <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="font-semibold text-neutral-900">{exp.position}</h3>
-                    <span className="text-sm text-primary/90">
-                      {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
-                    </span>
-                  </div>
-                  <div className="text-sm text-neutral-700 mb-2">
-                    {exp.company} • {exp.location}
-                  </div>
-                  <p className="text-neutral-700 leading-relaxed whitespace-pre-line">
-                    {exp.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Projects */}
-        {data.projects.length > 0 && (
-          <section className="mb-8">
-            <h2 className="font-sans text-xl font-semibold text-neutral-900 mb-4 border-b border-neutral-600 pb-1">
-              Projects
-            </h2>
-            <div className="space-y-4">
-              {data.projects.map((project) => (
-                <div key={project.id}>
-                  <h3 className="font-semibold text-neutral-900 mb-1">
-                    {project.name}
-                    {project.link && (
-                      <a href={project.link} className="text-sm text-blue-700 ml-2 hover:underline">
-                        View Project
-                      </a>
-                    )}
-                  </h3>
-                  <p className="text-neutral-700 leading-relaxed mb-2">
-                    {project.description}
-                  </p>
-                  {project.technologies.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech, idx) => (
-                        <span
-                          key={idx}
-                          className="text-xs px-2 py-1 bg-stone-100 text-neutral-700 rounded"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+          {/* Experience */}
+          {data.experience.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+                Experience
+              </h2>
+              <div className="space-y-5">
+                {data.experience.map((exp) => (
+                  <div key={exp.id}>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h3 className="text-sm font-semibold text-neutral-900">
+                        {exp.position}
+                      </h3>
+                      <span className="text-xs text-neutral-500 font-medium whitespace-nowrap ml-4">
+                        {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
+                      </span>
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+                    <div className="text-xs text-neutral-600 mb-2 font-medium">
+                      {exp.company} <span className="text-neutral-300 mx-1">•</span> {exp.location}
+                    </div>
+                    <p className="text-sm text-neutral-700 leading-relaxed whitespace-pre-line">
+                      {exp.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
-        {/* Skills */}
-        {data.skills.length > 0 && (
-          <section className="mb-8">
-            <h2 className="font-sans text-xl font-semibold text-neutral-900 mb-3 border-b border-neutral-600 pb-1">
-              Skills
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {data.skills.map((skill, idx) => (
-                <span
-                  key={idx}
-                  className="px-3 py-1 bg-stone-100 text-neutral-700 rounded text-sm"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
 
-        {/* Achievements */}
-        {data.achievements.length > 0 && (
-          <section className="mb-8">
-            <h2 className="font-sans text-xl font-semibold text-neutral-900 mb-4 border-b border-neutral-600 pb-1">
-              Achievements
-            </h2>
-            <div className="space-y-3">
-              {data.achievements.map((achievement) => (
-                <div key={achievement.id}>
-                  <h3 className="font-semibold text-neutral-900 mb-1">
-                    {achievement.title}
-                  </h3>
-                  <p className="text-neutral-700 leading-relaxed">
-                    {achievement.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Certificates */}
-        {data.certificates.length > 0 && (
-          <section className="mb-8">
-            <h2 className="font-sans text-xl font-semibold text-neutral-900 mb-4 border-b border-neutral-600 pb-1">
-              Certifications
-            </h2>
-            <div className="space-y-3">
-              {data.certificates.map((cert) => (
-                <div key={cert.id} className="flex justify-between items-baseline">
-                  <div>
-                    <h3 className="font-semibold text-neutral-900">
-                      {cert.name}
-                      {cert.link && (
-                        <a href={cert.link} className="text-sm text-blue-700 ml-2 hover:underline">
+          {/* Projects */}
+          {data.projects.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+                Projects
+              </h2>
+              <div className="space-y-5">
+                {data.projects.map((project) => (
+                  <div key={project.id}>
+                    <div className="flex items-baseline mb-1 border-neutral-200">
+                      <h3 className="text-sm font-semibold text-neutral-900">
+                        {project.name}
+                      </h3>
+                      {project.link && (
+                        <a href={project.link} className="text-xs text-neutral-500 hover:text-black ml-2 underline underline-offset-2">
                           View
                         </a>
                       )}
-                    </h3>
-                    <p className="text-sm text-primary/90">{cert.issuer}</p>
+                    </div>
+                    <p className="text-sm text-neutral-700 leading-relaxed mb-2">
+                      {project.description}
+                    </p>
+                    {project.technologies.length > 0 && (
+                      <p className="text-xs text-neutral-500">
+                        <span className="font-medium text-neutral-700">Technologies:</span> {project.technologies.join(', ')}
+                      </p>
+                    )}
                   </div>
-                  <span className="text-sm text-primary/90">{cert.date}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+                ))}
+              </div>
+            </section>
+          )}
+
+
+          {/* Education */}
+          {data.education?.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+                Education
+              </h2>
+              <div className="space-y-5">
+                {data.education.map((edu) => (
+                  <div key={edu.id}>
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h3 className="text-sm font-semibold text-neutral-900">
+                        {edu.institution}
+                      </h3>
+                      <span className="text-xs text-neutral-500 font-medium whitespace-nowrap ml-4">
+                        {edu.startDate} – {edu.current ? 'Present' : edu.endDate}
+                      </span>
+                    </div>
+                    <div className="text-xs text-neutral-600 font-medium">
+                      {edu.degree} in {edu.field}
+                      {edu.gpa && (
+                        <>
+                          <span className="text-neutral-300 mx-1">•</span> GPA: {edu.gpa}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+          {/* Skills */}
+          {data.skills.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-3 pb-2 border-b border-neutral-200">
+                Skills
+              </h2>
+              <p className="text-sm text-neutral-700 leading-relaxed">
+                {data.skills.join(' • ')}
+              </p>
+            </section>
+          )}
+
+          {/* Achievements */}
+          {data.achievements.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+                Achievements
+              </h2>
+              <div className="space-y-3">
+                {data.achievements.map((achievement) => (
+                  <div key={achievement.id}>
+                    <h3 className="text-sm font-semibold text-neutral-900 mb-0.5">
+                      {achievement.title}
+                    </h3>
+                    <p className="text-sm text-neutral-700 leading-relaxed">
+                      {achievement.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Certificates */}
+          {data.certificates.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-4 pb-2 border-b border-neutral-200">
+                Certifications
+              </h2>
+              <div className="space-y-3">
+                {data.certificates.map((cert) => (
+                  <div key={cert.id} className="flex justify-between items-baseline">
+                    <div>
+                      <h3 className="text-sm font-semibold text-neutral-900">
+                        {cert.name}
+                        {cert.link && (
+                          <a href={cert.link} className="text-xs text-neutral-500 hover:text-black ml-2 underline underline-offset-2">
+                            View
+                          </a>
+                        )}
+                      </h3>
+                      <p className="text-sm text-neutral-600">{cert.issuer}</p>
+                    </div>
+                    <span className="text-xs text-neutral-500 font-medium whitespace-nowrap ml-4">{cert.date}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
       </div>
     </div>
   );

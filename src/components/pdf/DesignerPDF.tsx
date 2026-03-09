@@ -1,116 +1,34 @@
+"use client"
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, Font } from '@react-pdf/renderer';
 import { ResumeData } from '@/types/resume';
+import { CORMORANT_GARAMOND_FONT, LEAGUE_SPARTAN_FONT, MONTSERRAT_FONT } from '@/constants/pdf-fonts';
+import { createTw } from 'react-pdf-tailwind';
+import { cn } from '@/lib/utils';
 
-// Register fonts if needed
-// Font.register({ family: 'Roboto', src: 'path/to/font.ttf' });
+// Register local fonts from constants
+Font.register({
+  family: 'CormorantGaramond',
+  fonts: CORMORANT_GARAMOND_FONT
+});
 
-const styles = StyleSheet.create({
-  page: {
-    padding: 40,
-    backgroundColor: '#e8e4d8',
-    fontFamily: 'Helvetica',
-  },
-  header: {
-    marginBottom: 30,
-  },
-  name: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    fontSize: 9,
-    textTransform: 'uppercase',
-    fontWeight: 'bold',
-  },
-  mainGrid: {
-    flexDirection: 'row',
-    gap: 20,
-    marginBottom: 20,
-  },
-  column: {
-    flex: 1,
-  },
-  summaryText: {
-    fontSize: 9,
-    lineHeight: 1.5,
-    textAlign: 'justify',
-  },
-  photoBox: {
-    width: 120,
-    height: 120,
-    backgroundColor: '#d1d5db',
-    alignSelf: 'center',
-  },
-  contactSection: {
-    fontSize: 9,
-  },
-  contactLabel: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-    marginTop: 8,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-  },
-  experienceGrid: {
-    flexDirection: 'row',
-    gap: 15,
-    marginBottom: 20,
-  },
-  experienceItem: {
-    flex: 1,
-    fontSize: 9,
-  },
-  experienceTitle: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    fontSize: 10,
-    marginBottom: 4,
-  },
-  experiencePosition: {
-    fontStyle: 'italic',
-    marginBottom: 8,
-  },
-  experienceDescription: {
-    lineHeight: 1.5,
-    textAlign: 'justify',
-  },
-  bottomGrid: {
-    flexDirection: 'row',
-    gap: 20,
-    marginBottom: 20,
-  },
-  skillsList: {
-    fontSize: 10,
-    lineHeight: 1.8,
-  },
-  educationItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    fontSize: 9,
-    marginBottom: 12,
-  },
-  educationInstitution: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    fontSize: 10,
-  },
-  achievementItem: {
-    fontSize: 9,
-    marginBottom: 10,
-  },
-  achievementTitle: {
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    fontSize: 10,
-    marginBottom: 4,
+Font.register({
+  family: 'LeagueSpartan',
+  fonts: LEAGUE_SPARTAN_FONT
+});
+
+Font.register({
+  family: 'Montserrat',
+  fonts: MONTSERRAT_FONT
+});
+
+const tw = createTw({
+  theme: {
+    fontFamily: {
+      cormorant: ['CormorantGaramond'],
+      spartan: ['LeagueSpartan'],
+      montserrat: ['Montserrat'],
+    },
   },
 });
 
@@ -135,62 +53,69 @@ export const DesignerPDF: React.FC<DesignerPDFProps> = ({ data }) => {
   const url = social.website ? new URL(social.website).hostname : 'www.example.com';
 
   return (
-    <Document>
-      <Page size="A4" style={styles.page}>
+    <Document >
+      <Page size="A4" style={tw(cn("px-12 py-6 bg-[#e8e4d8] flex flex-col"))}>
         {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.name}>{personalInfo.fullName || 'Morgan Maxwell'}</Text>
-          <View style={styles.headerRow}>
+        <View style={tw("mb-8")}>
+          <Text style={tw(cn("text-[72px] leading-none font-cormorant font-bold text-center mb-1 tracking-tight"))}>
+            {personalInfo.fullName || 'Morgan Maxwell'}
+          </Text>
+          <View style={tw("flex flex-row justify-between items-center text-xs uppercase tracking-wider font-spartan font-semibold")}>
             <Text>{personalInfo.headline || 'Headline Here'}</Text>
             <Text>{url}</Text>
           </View>
         </View>
 
-        {/* Main Grid */}
-        <View style={styles.mainGrid}>
-          {/* Summary */}
-          <View style={styles.column}>
-            <Text style={styles.summaryText}>
-              {summary || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
+        {/* Main Content Grid - 3 columns */}
+        <View style={tw("flex flex-row gap-8 mb-8")}>
+          {/* Left Column - Summary */}
+          <View style={tw("flex-1")}>
+            <Text style={tw("text-xs leading text-justify font-montserrat")}>
+              {summary || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum. In elementum elit at dui tristique feugiat.'}
             </Text>
           </View>
 
-          {/* Photo Placeholder */}
-          <View style={styles.column}>
-            <View style={styles.photoBox} />
+          {/* Center Column - Photo */}
+          <View style={tw("flex-1 flex items-center justify-center")}>
+            <View style={tw("w-48 h-48 bg-white rounded-lg")} />
           </View>
 
-          {/* Contact */}
-          <View style={styles.column}>
-            <View style={styles.contactSection}>
-              <Text style={styles.contactLabel}>LINKEDIN</Text>
-              <Text>{social?.linkedin?.split('.com/')[1] || 'linkedin/...'}</Text>
-              
-              <Text style={styles.contactLabel}>EMAIL</Text>
-              <Text>{social.email || 'you@mail.com'}</Text>
-              
-              <Text style={styles.contactLabel}>PHONE</Text>
-              <Text>{personalInfo.phone || '+123-456-7890'}</Text>
-              
-              <Text style={styles.contactLabel}>ADDRESS</Text>
-              <Text>{personalInfo.location || '123 ANYWHERE ST.'}, {personalInfo.country || 'Canada'}</Text>
+          {/* Right Column - Contact */}
+          <View style={tw("flex-1 text-xs font-montserrat")}>
+            <View style={tw("mb-2")}>
+              <Text style={tw("font-spartan font-semibold mb-1")}>LINKEDIN</Text>
+              <Text style={tw("font-montserrat")}>{social?.linkedin?.split('.com/')[1] || 'linkedin/...'}</Text>
+            </View>
+            <View style={tw("mb-2 pt-2")}>
+              <Text style={tw("font-spartan font-semibold mb-1")}>EMAIL</Text>
+              <Text style={tw("font-montserrat")}>{social.email || 'you@mail.com'}</Text>
+            </View>
+            <View style={tw("mb-2 pt-2")}>
+              <Text style={tw("font-spartan font-semibold mb-1")}>PHONE</Text>
+              <Text style={tw("font-montserrat")}>{personalInfo.phone || '+123-456-7890'}</Text>
+            </View>
+            <View style={tw("pt-2")}>
+              <Text style={tw("font-spartan font-semibold mb-1")}>ADDRESS</Text>
+              <Text style={tw("font-montserrat")}>{personalInfo.location || '123 ANYWHERE ST., ANY CITY'}, {personalInfo.country || 'Canada'}</Text>
             </View>
           </View>
         </View>
 
-        {/* Experience */}
+        {/* Work Experience */}
         {experience.length > 0 && (
-          <View style={{ marginBottom: 20 }}>
-            <Text style={styles.sectionTitle}>WORK EXPERIENCE</Text>
-            <View style={styles.experienceGrid}>
+          <View style={tw("mb-8")}>
+            <Text style={tw("text-2xl font-cormorant font-semibold mb-3 tracking-tighter")}>WORK EXPERIENCE</Text>
+            <View style={tw("flex flex-row gap-6")}>
               {experience.slice(0, 3).map((exp) => (
-                <View key={exp.id} style={styles.experienceItem}>
-                  <Text style={styles.experienceTitle}>
-                    {exp.company} | {exp.startDate}-{exp.current ? 'Present' : exp.endDate}
+                <View key={exp.id} style={tw("flex-1 text-xs font-montserrat")}>
+                  <Text style={tw("font-spartan font-semibold uppercase text-sm mb-1")}>
+                    {exp.company} | {exp.position}
                   </Text>
-                  <Text style={styles.experiencePosition}>{exp.position}</Text>
-                  <Text style={styles.experienceDescription}>
-                    {exp.description || 'Lorem ipsum dolor sit amet.'}
+                  <Text style={tw("mb-2")}>
+                    {exp.startDate}-{exp.current ? 'Present' : exp.endDate}
+                  </Text>
+                  <Text style={tw("text-justify leading-relaxed")}>
+                    {exp.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet.'}
                   </Text>
                 </View>
               ))}
@@ -200,15 +125,15 @@ export const DesignerPDF: React.FC<DesignerPDFProps> = ({ data }) => {
 
         {/* Projects */}
         {projects.length > 0 && (
-          <View style={{ marginBottom: 20 }}>
-            <Text style={styles.sectionTitle}>PROJECTS</Text>
-            <View style={styles.experienceGrid}>
+          <View style={tw("mb-8")}>
+            <Text style={tw("text-2xl font-cormorant font-semibold mb-3 tracking-tighter")}>PROJECTS</Text>
+            <View style={tw("flex flex-row gap-6")}>
               {projects.slice(0, 3).map((proj) => (
-                <View key={proj.id} style={styles.experienceItem}>
-                  <Text style={styles.experienceTitle}>{proj.name}</Text>
-                  <Text style={styles.experiencePosition}>{proj.technologies.join(' ')}</Text>
-                  <Text style={styles.experienceDescription}>
-                    {proj.description || 'Lorem ipsum dolor sit amet.'}
+                <View key={proj.id} style={tw("flex-1 text-xs font-montserrat")}>
+                  <Text style={tw("font-spartan font-semibold uppercase text-sm mb-1")}>{proj.name}</Text>
+                  <Text style={tw("italic mb-1")}>{proj.technologies.join(' ')}</Text>
+                  <Text style={tw("leading-relaxed")}>
+                    {proj.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet.'}
                   </Text>
                 </View>
               ))}
@@ -216,70 +141,84 @@ export const DesignerPDF: React.FC<DesignerPDFProps> = ({ data }) => {
           </View>
         )}
 
-        {/* Bottom Grid */}
-        <View style={styles.bottomGrid}>
+        {/* Bottom Grid - Languages, Skills, Education */}
+        <View style={tw("flex flex-row gap-8 mb-8")}>
           {/* Languages */}
           {languages.length > 0 && (
-            <View style={styles.column}>
-              <Text style={styles.sectionTitle}>LANGUAGES</Text>
-              {languages.slice(0, 4).map((lang, idx) => (
-                <Text key={idx} style={styles.skillsList}>{lang}</Text>
-              ))}
+            <View style={tw("flex-1")}>
+              <Text style={tw("text-2xl font-cormorant font-semibold mb-2 tracking-tighter")}>LANGUAGES</Text>
+              <View style={tw("flex flex-col gap-2 text-sm font-montserrat")}>
+                {languages.slice(0, 4).map((lang, idx) => (
+                  <View key={idx} style={tw("flex flex-row justify-between items-center")}>
+                    <Text>{lang}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
           )}
 
           {/* Skills */}
           {skills.length > 0 && (
-            <View style={styles.column}>
-              <Text style={styles.sectionTitle}>SKILLS</Text>
-              {skills.slice(0, 5).map((skill, idx) => (
-                <Text key={idx} style={styles.skillsList}>• {skill}</Text>
-              ))}
+            <View style={tw("flex-1")}>
+              <Text style={tw("text-2xl font-cormorant font-semibold mb-1.5 tracking-tighter")}>SKILLS</Text>
+              <View style={tw("text-sm font-montserrat")}>
+                {skills.slice(0, 5).map((skill, idx) => (
+                  <Text key={idx}>• {skill}</Text>
+                ))}
+              </View>
             </View>
           )}
 
           {/* Education */}
           {education.length > 0 && (
-            <View style={styles.column}>
-              <Text style={styles.sectionTitle}>EDUCATION</Text>
-              {education.slice(0, 2).map((edu) => (
-                <View key={edu.id} style={styles.educationItem}>
-                  <View>
-                    <Text style={styles.educationInstitution}>{edu.institution}</Text>
-                    <Text>({edu.degree} - {edu.field})</Text>
+            <View style={tw("flex-1")}>
+              <Text style={tw("text-2xl font-cormorant font-semibold mb-3 tracking-tighter")}>EDUCATION</Text>
+              <View style={tw("flex flex-col gap-3 text-xs font-montserrat")}>
+                {education.slice(0, 2).map((edu) => (
+                  <View key={edu.id} style={tw("flex flex-row justify-between")}>
+                    <View>
+                      <Text style={tw("font-spartan text-sm font-semibold uppercase")}>{edu.institution}</Text>
+                      <Text>({edu.degree} - {edu.field})</Text>
+                    </View>
+                    <Text style={tw("font-spartan font-bold")}>
+                      {edu.startDate}-{edu.current ? 'Present' : edu.endDate}
+                    </Text>
                   </View>
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {edu.startDate}-{edu.current ? 'Present' : edu.endDate}
-                  </Text>
-                </View>
-              ))}
+                ))}
+              </View>
             </View>
           )}
         </View>
 
         {/* Achievements and Certificates */}
-        <View style={styles.bottomGrid}>
+        <View style={tw("flex flex-row gap-8")}>
+          {/* Achievements */}
           {achievements.length > 0 && (
-            <View style={styles.column}>
-              <Text style={styles.sectionTitle}>ACHIEVEMENTS</Text>
-              {achievements.slice(0, 2).map((achievement) => (
-                <View key={achievement.id} style={styles.achievementItem}>
-                  <Text style={styles.achievementTitle}>{achievement.title}</Text>
-                  <Text>{achievement.description}</Text>
-                </View>
-              ))}
+            <View style={tw("flex-1")}>
+              <Text style={tw("text-2xl font-cormorant font-semibold mb-4 tracking-tighter")}>ACHIEVEMENTS</Text>
+              <View style={tw("text-xs font-montserrat flex flex-col gap-2")}>
+                {achievements.slice(0, 2).map((achievement) => (
+                  <View key={achievement.id}>
+                    <Text style={tw("font-spartan text-sm font-semibold uppercase")}>{achievement.title}</Text>
+                    <Text style={tw("leading-relaxed")}>{achievement.description}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
           )}
 
+          {/* Certificates */}
           {certificates.length > 0 && (
-            <View style={{ flex: 2 }}>
-              <Text style={styles.sectionTitle}>CERTIFICATES</Text>
-              <View style={styles.experienceGrid}>
+            <View style={tw("flex-[2]")}>
+              <Text style={tw("text-2xl font-cormorant font-semibold mb-4 tracking-tighter")}>CERTIFICATES</Text>
+              <View style={tw("flex flex-row gap-6")}>
                 {certificates.slice(0, 3).map((cert) => (
-                  <View key={cert.id} style={styles.experienceItem}>
-                    <Text style={styles.experienceTitle}>{cert.name}</Text>
-                    <Text style={styles.experiencePosition}>{cert.date}</Text>
-                    <Text>{cert.issuer || 'Lorem ipsum dolor sit amet.'}</Text>
+                  <View key={cert.id} style={tw("flex-1 text-xs font-montserrat")}>
+                    <Text style={tw("font-spartan text-sm font-semibold uppercase mb-1")}>{cert.name}</Text>
+                    <Text style={tw("italic mb-2")}>{cert.date}</Text>
+                    <Text style={tw("leading-relaxed")}>
+                      {cert.issuer || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
+                    </Text>
                   </View>
                 ))}
               </View>

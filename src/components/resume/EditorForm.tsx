@@ -32,6 +32,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
   const [editingAchievement, setEditingAchievement] = useState<Achievement | null>(null);
   const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
   const [editingEducation, setEditingEducation] = useState<Education | null>(null);
+  const [socialErrors, setSocialErrors] = useState<Partial<Record<keyof ResumeData['social'], string>>>({});
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
@@ -44,12 +45,68 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
     });
   };
 
-  const updateSocialInfo = (field: string, value: string) => {
+  const updateSocialInfo = (field: keyof ResumeData['social'], value: string) => {
     onChange({
       ...data,
       social: { ...data.social, [field]: value }
     })
   }
+
+  const validateAndFormatSocialLink = (field: keyof ResumeData['social'], value: string) => {
+    if (!value) {
+      setSocialErrors(prev => ({ ...prev, [field]: undefined }));
+      return;
+    }
+
+    if (field === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setSocialErrors(prev => ({
+        ...prev,
+        [field]: emailRegex.test(value) ? undefined : 'Invalid email address'
+      }));
+      return;
+    }
+
+    const expectedKeywords: Record<string, string[]> = {
+      linkedin: ['linkedin.com', 'www.linkedin.com'],
+      github: ['github.com', 'www.github.com'],
+      twitter: ['twitter.com', 'x.com', 'www.twitter.com', 'www.x.com'],
+      medium: ['medium.com', 'www.medium.com'],
+      instagram: ['instagram.com', 'www.instagram.com'],
+    };
+
+    let formattedUrl = value.trim();
+    const hasProtocol = /^https?:\/\//i.test(formattedUrl);
+
+    if (!hasProtocol) {
+      if (field !== 'website' && expectedKeywords[field as string]) {
+        const isValidStart = expectedKeywords[field as string].some(kw => formattedUrl.toLowerCase().startsWith(kw));
+        if (!isValidStart) {
+          setSocialErrors(prev => ({ ...prev, [field]: `Link should start with ${expectedKeywords[field as string][0]}` }));
+          return;
+        }
+      }
+      formattedUrl = `https://${formattedUrl}`;
+    }
+
+    try {
+      const url = new URL(formattedUrl);
+
+      // If they provided protocol manually, make sure it's the correct domain
+      if (hasProtocol && field !== 'website' && expectedKeywords[field as string]) {
+        const isValidDomain = expectedKeywords[field as string].some(kw => url.hostname.toLowerCase().includes(kw.replace('www.', '')));
+        if (!isValidDomain) {
+          setSocialErrors(prev => ({ ...prev, [field]: `Must be a valid ${field} link` }));
+          return;
+        }
+      }
+
+      updateSocialInfo(field, url.href);
+      setSocialErrors(prev => ({ ...prev, [field]: undefined }));
+    } catch {
+      setSocialErrors(prev => ({ ...prev, [field]: 'Invalid URL' }));
+    }
+  };
 
   const updateSummary = (value: string) => {
     onChange({ ...data, summary: value });
@@ -288,11 +345,14 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
                 <Input
                   id="email"
                   type="email"
-                  value={data.social.email}
+                  value={data.social.email || ''}
                   onChange={(e) => updateSocialInfo('email', e.target.value)}
+                  onBlur={(e) => validateAndFormatSocialLink('email', e.target.value)}
+                  aria-invalid={!!socialErrors.email}
                   placeholder="you@mail.com"
                   className="h-9"
                 />
+                {socialErrors.email && <span className="text-[10px] text-destructive">{socialErrors.email}</span>}
               </div>
               <div>
                 <Label htmlFor="phone" className="text-xs text-primary/90 mb-1">Phone</Label>
@@ -333,61 +393,79 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
                 <Label htmlFor="website" className="text-xs text-primary/90 mb-1">Website</Label>
                 <Input
                   id="website"
-                  value={data.social.website}
+                  value={data.social.website || ''}
                   onChange={(e) => updateSocialInfo('website', e.target.value)}
+                  onBlur={(e) => validateAndFormatSocialLink('website', e.target.value)}
+                  aria-invalid={!!socialErrors.website}
                   placeholder="yoursite.com"
                   className="h-9"
                 />
+                {socialErrors.website && <span className="text-[10px] text-destructive">{socialErrors.website}</span>}
               </div>
               <div>
                 <Label htmlFor="linkedin" className="text-xs text-primary/90 mb-1">LinkedIn</Label>
                 <Input
                   id="linkedin"
-                  value={data.social.linkedin}
+                  value={data.social.linkedin || ''}
                   onChange={(e) => updateSocialInfo('linkedin', e.target.value)}
+                  onBlur={(e) => validateAndFormatSocialLink('linkedin', e.target.value)}
+                  aria-invalid={!!socialErrors.linkedin}
                   placeholder="linkedin.com/in/..."
                   className="h-9"
                 />
+                {socialErrors.linkedin && <span className="text-[10px] text-destructive">{socialErrors.linkedin}</span>}
               </div>
               <div>
                 <Label htmlFor="github" className="text-xs text-primary/90 mb-1">GitHub</Label>
                 <Input
                   id="github"
-                  value={data.social.github}
+                  value={data.social.github || ''}
                   onChange={(e) => updateSocialInfo('github', e.target.value)}
+                  onBlur={(e) => validateAndFormatSocialLink('github', e.target.value)}
+                  aria-invalid={!!socialErrors.github}
                   placeholder="github.com/..."
                   className="h-9"
                 />
+                {socialErrors.github && <span className="text-[10px] text-destructive">{socialErrors.github}</span>}
               </div>
               <div>
                 <Label htmlFor="twitter" className="text-xs text-primary/90 mb-1">Twitter</Label>
                 <Input
                   id="twitter"
-                  value={data.social.twitter}
+                  value={data.social.twitter || ''}
                   onChange={(e) => updateSocialInfo('twitter', e.target.value)}
+                  onBlur={(e) => validateAndFormatSocialLink('twitter', e.target.value)}
+                  aria-invalid={!!socialErrors.twitter}
                   placeholder="x.com/..."
                   className="h-9"
                 />
+                {socialErrors.twitter && <span className="text-[10px] text-destructive">{socialErrors.twitter}</span>}
               </div>
               <div>
                 <Label htmlFor="medium" className="text-xs text-primary/90 mb-1">Medium</Label>
                 <Input
                   id="medium"
-                  value={data.social.medium}
+                  value={data.social.medium || ''}
                   onChange={(e) => updateSocialInfo('medium', e.target.value)}
+                  onBlur={(e) => validateAndFormatSocialLink('medium', e.target.value)}
+                  aria-invalid={!!socialErrors.medium}
                   placeholder="medium.com/..."
                   className="h-9"
                 />
+                {socialErrors.medium && <span className="text-[10px] text-destructive">{socialErrors.medium}</span>}
               </div>
               <div>
                 <Label htmlFor="instagram" className="text-xs text-primary/90 mb-1">Instagram</Label>
                 <Input
                   id="instagram"
-                  value={data.social.instagram}
+                  value={data.social.instagram || ''}
                   onChange={(e) => updateSocialInfo('instagram', e.target.value)}
+                  onBlur={(e) => validateAndFormatSocialLink('instagram', e.target.value)}
+                  aria-invalid={!!socialErrors.instagram}
                   placeholder="instagram.com/..."
                   className="h-9"
                 />
+                {socialErrors.instagram && <span className="text-[10px] text-destructive">{socialErrors.instagram}</span>}
               </div>
             </div>
           </div>
@@ -536,7 +614,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
                 data={data.achievements}
                 columns={[
                   { key: 'title', label: 'Title' },
-                  { key: 'description', label: 'Description'}
+                  { key: 'description', label: 'Description' }
                 ]}
                 onEdit={setEditingAchievement}
                 onDelete={deleteAchievement}
