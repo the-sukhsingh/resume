@@ -12,7 +12,7 @@ const VercelPreview: React.FC<VercelProps> = ({ data }) => {
 
     return (
         <div className="h-full overflow-y-auto nobar overscroll-none bg-background p-8 select-none font-geist dark:bg-background">
-            <div id="resume-preview-vercel" className="mx-auto max-w-204 min-h-[11.6in] bg-[#040404] text-white shadow-2xl scale-90 origin-top border border-neutral-800 relative overflow-hidden">
+            <div id="resume-preview" className="mx-auto max-w-204 h-[11.6in] bg-[#040404] text-white shadow-2xl scale-90 origin-top border border-neutral-800 relative overflow-hidden">
                 {/* Hero Header */}
                 <div className="">
                     <div className="border-b border-neutral-800 px-5 pb-4 pt-6">
@@ -85,8 +85,6 @@ const VercelPreview: React.FC<VercelProps> = ({ data }) => {
                             )}
                         </div>
                     </div>
-
-
                 </div>
 
                 {/* About Section */}
@@ -333,7 +331,7 @@ const VercelPreview: React.FC<VercelProps> = ({ data }) => {
 }
 
 const Heading = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <h2 className={cn("text-base text-neutral-500 tracking-wider mb-2", className)}>
+    <h2 className={cn("text-sm uppercase font-geist-mono text-neutral-500 tracking-wider mb-2", className)}>
         {children}
     </h2>
 )

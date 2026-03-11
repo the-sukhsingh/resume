@@ -43,13 +43,13 @@ const DesignerPreview: React.FC<DesignerProps> = ({ data }) => {
 
     return (
         <div className="h-full overflow-y-auto nobar overscroll-none bg-background p-8 select-none text-black">
-            <div id="resume-preview-designer" className="mx-auto max-w-[8.5in] bg-[#e8e4d8d6] shadow-[0_2px_8px_rgba(0,0,0,0.08)] scale-90 px-12 py-6 origin-top">
+            <div id="resume-preview" className="mx-auto max-w-204 min-h-[11.7in] bg-[#e8e4d8d6] shadow-[0_2px_8px_rgba(0,0,0,0.08)] scale-90 px-12 py-6 origin-top">
                 {/* Header */}
                 <header className="mb-8">
                     <h1 className="text-8xl text-center font-cormorant font-bold mb-1 tracking-tight leading-none">
                         {personalInfo.fullName || "Morgan Maxwell"}
                     </h1>
-                    <div className="flex justify-between items-center text-xs uppercase tracking-wider font-league-spartan font-semibold">
+                    <div className="flex justify-between items-center text-xs uppercase tracking-wider font-league-spartan font-semibold decoration-">
                         <span>{personalInfo.headline || "Headline Here"}</span>
                         <a href={String(url) || "/editor"} target='_blank'>{
                             url.hostname

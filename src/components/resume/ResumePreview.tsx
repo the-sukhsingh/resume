@@ -4,7 +4,6 @@ import React from 'react';
 import { ResumeData } from '@/types/resume';
 import { ClassicPreview } from '../preview/Classic';
 import DesignerPreview from '../preview/Designer';
-import { DesignerPDF } from '../pdf/DesignerPDF';
 import VercelPreview from '../preview/Vercel';
 
 
@@ -13,7 +12,7 @@ interface ResumePreviewProps {
   data: ResumeData;
 }
 
-export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, theme = "designer" }) => {
+export const ResumePreviewComp: React.FC<ResumePreviewProps> = ({ data, theme = "designer" }) => {
 
   const getPreviewComponent = () => {
     switch (theme) {
@@ -24,7 +23,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, theme = "des
       case "vercel":
         return <VercelPreview data={data} />
       default:
-        return <ClassicPreview data={data} />;
+        return <DesignerPreview data={data} />;
     }
   };
   const PreviewComponent = getPreviewComponent();

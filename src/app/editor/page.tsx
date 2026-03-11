@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { ResumeData } from '@/types/resume';
 import { EditorForm } from '@/components/resume/EditorForm';
-import { ResumePreview } from '@/components/resume/ResumePreview';
 import { ResizablePanels } from '@/components/resume/ResizablePanels';
 import { Save, Download } from 'lucide-react';
-import { generatePDF } from '@/lib/pdf-generator';
 import { Button } from '@/components/ui/button';
-import { generatePdf } from '@/lib/canvas-based-pdf';
+import { ResumePreviewComp } from '@/components/resume/ResumePreview';
+import DesignerPreview from '@/components/preview/Designer';
 
 const STORAGE_KEY = 'resume-data';
 
@@ -80,6 +79,29 @@ const EditorPage = () => {
   };
 
 
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      const element = document.getElementById('resume-preview');
+      if (!element) throw new Error('Preview element not found');
+      const { generateFile } = await import('@/lib/pdf/generation');
+      const fileData = await generateFile(element);
+      const link = document.createElement('a');
+      link.href = fileData;
+      link.download = `${resumeData.personalInfo.fullName || 'resume'}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    catch (error) {
+      console.error('Error generating image:', error);
+    }
+    finally {
+      setIsDownloading(false);
+    }
+  }
+
+
   return (
     <div className="h-screen flex flex-col bg-muted p-2 ">
       {/* Header */}
@@ -127,23 +149,21 @@ const EditorPage = () => {
           </Button>
         </div>
          <Button
-            onClick={() => {
-              alert("Upcoming Feature")
-            }}
+            onClick={handleDownload}
             disabled={isDownloading}
             variant="default"
             size="sm"
             className="flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
-            {isDownloading ? 'Generating PDF...' : 'Download PDF'}
+            {isDownloading ? 'Generating...' : 'Download'}
           </Button>
       </div>
 
       {/* Split View */}
       <ResizablePanels
         leftPanel={<EditorForm data={resumeData} onChange={handleDataChange} />}
-        rightPanel={<ResumePreview data={resumeData} theme={currentTheme} />}
+        rightPanel={<ResumePreviewComp data={resumeData} theme={currentTheme} />}
       />
     </div>
   );

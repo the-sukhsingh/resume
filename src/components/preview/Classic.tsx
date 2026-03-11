@@ -11,7 +11,7 @@ export const ClassicPreview: React.FC<ClassicPreviewProps> = ({ data }) => {
   return (
     <div className="h-full overflow-y-auto bg-neutral-100 p-4 sm:p-8">
       <div
-        id="resume-preview-classic"
+        id="resume-preview"
         className="mx-auto max-w-204 bg-white p-10 sm:p-16 shadow-sm font-sans"
       >
         {/* Header */}
