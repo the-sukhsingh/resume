@@ -174,3 +174,7 @@ body {
   scrollbar-width: none;
   /* Firefox */
 }
+
+.print-preview{
+  @apply p-0 m-0 bg-white text-black;
+}

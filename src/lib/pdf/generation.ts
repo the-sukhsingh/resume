@@ -13,3 +13,18 @@ export const generateFile = async (element: HTMLElement): Promise<string> => {
     }
 }
 
+
+export const downloadPDF = async (element: HTMLElement): Promise<string> => {
+    const resumeHtml = element.innerHTML;
+
+    const response = await fetch('/api/pdf', {
+        method: 'POST',
+        body: JSON.stringify({ html: resumeHtml }),
+    });
+    if (!response.ok) {
+        throw new Error('Failed to generate PDF');
+    }
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    return url;
+};

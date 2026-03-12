@@ -7,23 +7,25 @@ import DesignerPreview from '../preview/Designer';
 import VercelPreview from '../preview/Vercel';
 
 
+
 interface ResumePreviewProps {
   theme?: "classic" | "designer" | "vercel",
   data: ResumeData;
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
-export const ResumePreviewComp: React.FC<ResumePreviewProps> = ({ data, theme = "designer" }) => {
+export const ResumePreviewComp = React.forwardRef<HTMLDivElement, ResumePreviewProps>(({ data, theme = "designer" }, ref) => {
 
   const getPreviewComponent = () => {
     switch (theme) {
       case "classic":
         return <ClassicPreview data={data} />;
       case "designer":
-        return <DesignerPreview data={data} />;
+        return <DesignerPreview data={data} ref={ref} />;
       case "vercel":
-        return <VercelPreview data={data} />
+        return <VercelPreview data={data} ref={ref} />
       default:
-        return <DesignerPreview data={data} />;
+        return <DesignerPreview data={data} ref={ref}  />;
     }
   };
   const PreviewComponent = getPreviewComponent();
@@ -37,4 +39,6 @@ export const ResumePreviewComp: React.FC<ResumePreviewProps> = ({ data, theme = 
       {PreviewComponent}
     </div>
   );
-};
+});
+
+ResumePreviewComp.displayName = 'ResumePreviewComp';

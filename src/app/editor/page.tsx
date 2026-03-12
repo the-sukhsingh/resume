@@ -1,15 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ResumeData } from '@/types/resume';
 import { EditorForm } from '@/components/resume/EditorForm';
 import { ResizablePanels } from '@/components/resume/ResizablePanels';
 import { Save, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ResumePreviewComp } from '@/components/resume/ResumePreview';
-import DesignerPreview from '@/components/preview/Designer';
+import { useReactToPrint } from 'react-to-print';
+import {generateFile} from "@/lib/pdf/generation";
+import { createPrintConfig } from "@/lib/pdf/print";
 
 const STORAGE_KEY = 'resume-data';
+
 
 const initialData: ResumeData = {
   personalInfo: {
@@ -18,14 +21,13 @@ const initialData: ResumeData = {
     country: '',
     phone: '',
     location: '',
-    
   },
   social: {
     email: '',
     github: '',
     linkedin: '',
     instagram: '',
-    medium: '', 
+    medium: '',
     twitter: '',
     website: ''
   },
@@ -43,8 +45,8 @@ const EditorPage = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
   const [isDownloading, setIsDownloading] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<'classic' | 'designer' | 'vercel'>('designer');
-
+  const [currentTheme, setCurrentTheme] = useState<'classic' | 'designer' | 'vercel'>('vercel');
+  const contentRef = useRef<HTMLDivElement>(null);
   // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -64,7 +66,7 @@ const EditorPage = () => {
     const timer = setTimeout(() => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
       setSaveStatus('saved');
-      
+
       setTimeout(() => {
         setSaveStatus('idle');
       }, 2000);
@@ -78,20 +80,34 @@ const EditorPage = () => {
     setSaveStatus('saving');
   };
 
+  const handlePrint = useReactToPrint(
+    createPrintConfig({
+      contentRef,
+      documentTitle: resumeData.personalInfo.fullName || 'resume',
+      theme: currentTheme,
+      onBeforePrint: async () => {
+        // Wait a moment for fonts to load
+        await new Promise(resolve => setTimeout(resolve, 200));
+      }
+    })
+  );
+  
 
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      const element = document.getElementById('resume-preview');
-      if (!element) throw new Error('Preview element not found');
-      const { generateFile } = await import('@/lib/pdf/generation');
-      const fileData = await generateFile(element);
-      const link = document.createElement('a');
-      link.href = fileData;
-      link.download = `${resumeData.personalInfo.fullName || 'resume'}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    const el = contentRef.current;
+    if (!el) {
+      throw new Error('Content not available for download');
+    }
+    const dataUrl = await generateFile(el);
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `${resumeData.personalInfo.fullName || 'resume'}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
     }
     catch (error) {
       console.error('Error generating image:', error);
@@ -102,6 +118,7 @@ const EditorPage = () => {
   }
 
 
+
   return (
     <div className="h-screen flex flex-col bg-muted p-2 ">
       {/* Header */}
@@ -110,7 +127,7 @@ const EditorPage = () => {
           <h1 className="font-sans text-lg font-semibold ">Resume Editor</h1>
         </div>
         <div className="flex items-center gap-3">
-         
+
           {saveStatus !== 'idle' && (
             <div className="flex items-center gap-2 text-sm">
               <Save className="w-4 h-4" />
@@ -148,22 +165,22 @@ const EditorPage = () => {
             Vercel
           </Button>
         </div>
-         <Button
-            onClick={handleDownload}
-            disabled={isDownloading}
-            variant="default"
-            size="sm"
-            className="flex items-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            {isDownloading ? 'Generating...' : 'Download'}
-          </Button>
+        <Button
+          onClick={handleDownload}
+          disabled={isDownloading}
+          variant="default"
+          size="sm"
+          className="flex items-center gap-2"
+        >
+          <Download className="w-4 h-4" />
+          {isDownloading ? 'Generating...' : 'Download'}
+        </Button>
       </div>
 
       {/* Split View */}
       <ResizablePanels
         leftPanel={<EditorForm data={resumeData} onChange={handleDataChange} />}
-        rightPanel={<ResumePreviewComp data={resumeData} theme={currentTheme} />}
+        rightPanel={<ResumePreviewComp ref={contentRef} data={resumeData} theme={currentTheme} />}
       />
     </div>
   );

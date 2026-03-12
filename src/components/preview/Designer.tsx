@@ -7,7 +7,7 @@ interface DesignerProps {
     data: ResumeData;
 }
 
-const DesignerPreview: React.FC<DesignerProps> = ({ data }) => {
+const DesignerPreview = React.forwardRef<HTMLDivElement, DesignerProps>(({ data }, ref) => {
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,8 +42,8 @@ const DesignerPreview: React.FC<DesignerProps> = ({ data }) => {
     const url = new URL(social.website || "https://www.google.com")
 
     return (
-        <div className="h-full overflow-y-auto nobar overscroll-none bg-background p-8 select-none text-black">
-            <div id="resume-preview" className="mx-auto max-w-204 min-h-[11.7in] bg-[#e8e4d8d6] shadow-[0_2px_8px_rgba(0,0,0,0.08)] scale-90 px-12 py-6 origin-top">
+        <div className="h-full overflow-y-auto nobar flex justify-center overscroll-none bg-background p-8 select-none text-black">
+            <div id="resume-preview" ref={ref} className="w-[8.27in] h-[11.69in] bg-[#e8e4d8d6] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-12 py-6 origin-top overflow-hidden flex flex-col">
                 {/* Header */}
                 <header className="mb-8">
                     <h1 className="text-8xl text-center font-cormorant font-bold mb-1 tracking-tight leading-none">
@@ -140,7 +140,7 @@ const DesignerPreview: React.FC<DesignerProps> = ({ data }) => {
                     <section className="mb-8">
                         <h2 className="text-2xl font-cormorant font-semibold mb-3 tracking-tighter">PROJECTS</h2>
                         <div className="grid grid-cols-3 gap-6">
-                            {projects.slice(0, 3).map((proj, idx) => (
+                            {projects.slice(0, experience.length > 0 ? 3 : 6).map((proj, idx) => (
                                 <div key={proj.id} className="text-xs font-montserrat">
                                     <a href={proj.link ? proj.link : "/editor"} className="font-league-spartan font-semibold uppercase text-sm mb-1">
                                         {proj.name}
@@ -249,6 +249,6 @@ const DesignerPreview: React.FC<DesignerProps> = ({ data }) => {
             </div>
         </div>
     )
-}
+});
 
 export default DesignerPreview

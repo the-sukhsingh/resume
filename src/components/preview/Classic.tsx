@@ -12,7 +12,7 @@ export const ClassicPreview: React.FC<ClassicPreviewProps> = ({ data }) => {
     <div className="h-full overflow-y-auto bg-neutral-100 p-4 sm:p-8">
       <div
         id="resume-preview"
-        className="mx-auto max-w-204 bg-white p-10 sm:p-16 shadow-sm font-sans"
+        className="mx-auto w-[8.27in] h-[11.69in] bg-white p-10 sm:p-16 shadow-sm font-sans overflow-hidden"
       >
         {/* Header */}
         <header className="mb-10 text-center">
