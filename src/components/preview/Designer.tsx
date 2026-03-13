@@ -1,4 +1,5 @@
 "use client"
+import { createPrintStyles } from '@/lib/pdf/print';
 import { ResumeData } from '@/types/resume';
 import { Image } from 'lucide-react';
 import React, { useRef, useState } from 'react'
@@ -8,8 +9,7 @@ interface DesignerProps {
 }
 
 const DesignerPreview = React.forwardRef<HTMLDivElement, DesignerProps>(({ data }, ref) => {
-    const [profileImage, setProfileImage] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+   
 
     const {
         personalInfo,
@@ -24,32 +24,20 @@ const DesignerPreview = React.forwardRef<HTMLDivElement, DesignerProps>(({ data 
         languages,
     } = data;
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleImageClick = () => {
-        fileInputRef.current?.click();
-    };
+    
 
     const url = new URL(social.website || "https://www.google.com")
 
     return (
         <div className="h-full overflow-y-auto nobar flex justify-center overscroll-none bg-background p-8 select-none text-black">
             <div id="resume-preview" ref={ref} className="w-[8.27in] h-[11.69in] bg-[#e8e4d8d6] shadow-[0_2px_8px_rgba(0,0,0,0.08)] px-12 py-6 origin-top overflow-hidden flex flex-col">
+                {/* <style>{createPrintStyles("designer")}</style> */}
                 {/* Header */}
                 <header className="mb-8">
-                    <h1 className="text-8xl text-center font-cormorant font-bold mb-1 tracking-tight leading-none">
+                    <h1 className="text-8xl text-center font-cormorant mb-1 tracking-tight leading-none">
                         {personalInfo.fullName || "Morgan Maxwell"}
                     </h1>
-                    <div className="flex justify-between items-center text-xs uppercase tracking-wider font-league-spartan font-semibold decoration-">
+                    <div className="flex justify-between items-center text-xs uppercase tracking-wider font-league-spartan decoration-">
                         <span>{personalInfo.headline || "Headline Here"}</span>
                         <a href={String(url) || "/editor"} target='_blank'>{
                             url.hostname
@@ -60,7 +48,7 @@ const DesignerPreview = React.forwardRef<HTMLDivElement, DesignerProps>(({ data 
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-3 gap-8 mb-8">
                     {/* Left Column - Summary */}
-                    <div className="col-span-1">
+                    <div className="col-span-1 flex justify-center items-center ">
                         <p className="text-xs leading-relaxed text-justify font-montserrat">
                             {summary || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum. In elementum elit at dui tristique feugiat."}
                         </p>
@@ -68,20 +56,12 @@ const DesignerPreview = React.forwardRef<HTMLDivElement, DesignerProps>(({ data 
 
                     {/* Center Column - Photo */}
                     <div className="col-span-1 flex justify-center">
-                        <input 
-                            ref={fileInputRef}
-                            type='file'
-                            hidden 
-                            accept='image/*'
-                            onChange={handleImageUpload}
-                        />
                         <div 
                             className="w-48 h-48 bg-white shadow-md cursor-pointer hover:opacity-80 transition-opacity overflow-hidden flex items-center justify-center rounded-lg"
-                            onClick={handleImageClick}
                         >
-                            {profileImage ? (
+                            {personalInfo.image ? (
                                 <img 
-                                    src={profileImage} 
+                                    src={personalInfo.image || ""} 
                                     alt="Profile" 
                                     draggable={false}
                                     className="w-full h-full object-cover "
@@ -93,12 +73,9 @@ const DesignerPreview = React.forwardRef<HTMLDivElement, DesignerProps>(({ data 
                     </div>
 
                     {/* Right Column - Contact */}
-                    <div className="col-span-1 text-xs space-y-2 font-montserrat">
-                        <div>
-                            <div className="font-league-spartan font-semibold mb-1">LINKEDIN</div>
-                            <a href={social.linkedin ? social.linkedin : "/editor"}> {social?.linkedin?.split(".com/")[1] || "linkedin/..."} </a>
-                        </div>
-                        <div className="border-t border-black pt-2">
+                    <div className="col-span-1 text-xs space-y-2 font-montserrat my-auto">
+                    
+                        <div className="pt-2">
                             <div className="font-league-spartan font-semibold mb-1">EMAIL</div>
                             <a href={social.email ? `mailto:${social.email}` : "/editor"} className="">{social.email || "you@mail.com"}</a>
                         </div>

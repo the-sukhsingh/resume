@@ -3,48 +3,48 @@ import type { FontSource as PdfFont } from "@react-pdf/font";
 // Cormorant Garamond fonts
 export const CORMORANT_GARAMOND_FONT: PdfFont[] = [
   {
-    src: "/fonts/Cormorant/Cormorant-Light.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-Light.ttf",
     fontWeight: "light",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-Regular.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-Regular.ttf",
     fontWeight: "normal",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-Medium.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-Medium.ttf",
     fontWeight: "medium",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-SemiBold.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-SemiBold.ttf",
     fontWeight: "semibold",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-Bold.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-Bold.ttf",
     fontWeight: "bold",
   },
   // Cormorant Italics
   {
-    src: "/fonts/Cormorant/Cormorant-LightItalic.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-LightItalic.ttf",
     fontWeight: "light",
     fontStyle: "italic",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-Italic.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-Italic.ttf",
     fontWeight: "normal",
     fontStyle: "italic",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-MediumItalic.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-MediumItalic.ttf",
     fontWeight: "medium",
     fontStyle: "italic",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-SemiBoldItalic.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-SemiBoldItalic.ttf",
     fontWeight: "semibold",
     fontStyle: "italic",
   },
   {
-    src: "/fonts/Cormorant/Cormorant-BoldItalic.ttf",
+    src: "/fonts/CormorantGaramond/CormorantGaramond-BoldItalic.ttf",
     fontWeight: "bold",
     fontStyle: "italic",
   },
@@ -320,3 +320,61 @@ export const GEIST_FONT: PdfFont[] = [
     fontWeight: "heavy",
   },
 ];
+
+
+
+export const CORMORANT_FONT: PdfFont[] = [
+  {
+    src: "/fonts/Cormorant/Cormorant-Light.ttf",
+    fontWeight: "light",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-LightItalic.ttf",
+    fontWeight: "light",
+    fontStyle: "italic",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-Regular.ttf",
+    fontWeight: "normal",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-Italic.ttf",
+    fontWeight: "normal",
+    fontStyle: "italic",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-Medium.ttf",
+    fontWeight: "medium",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-MediumItalic.ttf",
+    fontWeight: "medium",
+    fontStyle: "italic",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-SemiBold.ttf",
+    fontWeight: "semibold",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-SemiBoldItalic.ttf",
+    fontWeight: "semibold",
+    fontStyle: "italic",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-Bold.ttf",
+    fontWeight: "bold",
+  },
+  {
+    src: "/fonts/Cormorant/Cormorant-BoldItalic.ttf",
+    fontWeight: "bold",
+    fontStyle: "italic",
+  },
+];
+
+
+export const SAFIRA_MARCH_FONT: PdfFont[] = [
+  {
+    src: "/fonts/safiramarch/Safira-March-1.otf",
+    fontWeight: "normal",
+  },
+]

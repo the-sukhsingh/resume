@@ -4,6 +4,7 @@ export interface PersonalInfo {
   phone: string;
   location: string;
   country?: string;
+  image?: File | string;
 }
 
 export interface Social {

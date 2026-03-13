@@ -1,4 +1,5 @@
 "use client"
+import { createPrintStyles } from '@/lib/pdf/print'
 import { cn } from '@/lib/utils'
 import { ResumeData } from '@/types/resume'
 import React from 'react'
@@ -13,6 +14,7 @@ const VercelPreview = React.forwardRef<HTMLDivElement, VercelProps> ( ({ data },
     return (
         <div  className="h-full overflow-y-auto nobar flex justify-center overscroll-none bg-background p-8 select-none font-geist dark:bg-background">
             <div id="resume-preview" ref={ref} className="w-[8.27in] h-[11.69in] bg-[#040404] text-white shadow-2xl origin-top border border-neutral-800 relative overflow-hidden flex flex-col">
+            {/* <style>{createPrintStyles('vercel')}</style> */}
                 {/* Hero Header */}
                 <div className="">
                     <div className="border-b border-neutral-800 px-5 pb-4 pt-6">
@@ -158,7 +160,7 @@ const VercelPreview = React.forwardRef<HTMLDivElement, VercelProps> ( ({ data },
                                         )}
 
                                     >
-                                        <div className="flex items-start justify-between gap-3">
+                                        <div className="flex items-start justify-between gap-3 " >
                                             <h3 className="text-lg font-semibold leading-none text-white">
                                                 {project.name}
                                             </h3>
@@ -332,7 +334,6 @@ const VercelPreview = React.forwardRef<HTMLDivElement, VercelProps> ( ({ data },
                             </div>
                         </div>
                     )}
-
 
                 </div>) : null}
 

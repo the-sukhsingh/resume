@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ResumeData, Experience, Project, Achievement, Certificate, Education } from '@/types/resume';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Plus } from 'lucide-react';
+import { Image, Plus } from 'lucide-react';
 import { TagInput } from '@/components/resume/TagInput';
 import { DataTable } from '@/components/resume/DataTable';
 import { ExperienceModal } from '@/components/resume/ExperienceModal';
@@ -33,6 +33,34 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
   const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
   const [editingEducation, setEditingEducation] = useState<Education | null>(null);
   const [socialErrors, setSocialErrors] = useState<Partial<Record<keyof ResumeData['social'], string>>>({});
+  const [profileImage, setProfileImage] = useState<string | null>(
+    typeof data?.personalInfo?.image === 'string' ? data.personalInfo.image : String(data.personalInfo.image)
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+        onChange({
+          ...data,
+          personalInfo: {
+            ...data.personalInfo,
+            image: reader.result as string
+          }
+        })
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
@@ -472,19 +500,45 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
         </CollapsibleSection>
         <CollapsibleSection
           key="summary"
-          title="Professional Summary"
+          title="About"
           isOpen={openSection === 'summary'}
           onToggle={() => toggleSection('summary')}
-
           sectionKey="summary"
         >
-          <Textarea
-            value={data.summary}
-            onChange={(e) => updateSummary(e.target.value)}
-            placeholder="Brief overview of your professional background and key strengths..."
-            rows={8}
-            className="resize-none"
-          />
+          <div className="flex gap-4">
+
+            <Textarea
+              value={data.summary}
+              onChange={(e) => updateSummary(e.target.value)}
+              placeholder="Brief overview of your professional background and key strengths..."
+              rows={8}
+              className="resize-none"
+            />
+            <div>
+              <input
+                ref={fileInputRef}
+                type='file'
+                hidden
+                accept='image/*'
+                onChange={handleImageUpload}
+              />
+              <div
+                className="size-32 bg-white shadow-md cursor-pointer hover:opacity-80 transition-opacity overflow-hidden flex items-center justify-center rounded-lg"
+                onClick={handleImageClick}
+              >
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    draggable={false}
+                    className="w-full h-full object-cover "
+                  />
+                ) : (
+                  <Image className='size-10' />
+                )}
+              </div>
+            </div>
+          </div>
         </CollapsibleSection>
         <CollapsibleSection
           key="experience"

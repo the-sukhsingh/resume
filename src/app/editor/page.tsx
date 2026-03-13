@@ -4,13 +4,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ResumeData } from '@/types/resume';
 import { EditorForm } from '@/components/resume/EditorForm';
 import { ResizablePanels } from '@/components/resume/ResizablePanels';
-import { Save, Download } from 'lucide-react';
+import { Save, Download, Printer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ResumePreviewComp } from '@/components/resume/ResumePreview';
 import { useReactToPrint } from 'react-to-print';
-import {generateFile} from "@/lib/pdf/generation";
-import { createPrintConfig } from "@/lib/pdf/print";
+import { generateFile } from "@/lib/pdf/generation";
+import { createPrintConfig, createPrintStyles, FONT_FACES } from "@/lib/pdf/print";
+import dynamic from 'next/dynamic';
 
+const ResumePreview = dynamic(() => import('@/components/pdf/resume-preview'), { ssr: false });
 const STORAGE_KEY = 'resume-data';
 
 
@@ -45,7 +47,7 @@ const EditorPage = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
   const [isDownloading, setIsDownloading] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<'classic' | 'designer' | 'vercel'>('vercel');
+  const [currentTheme, setCurrentTheme] = useState<'classic' | 'designer' | 'vercel'>('designer');
   const contentRef = useRef<HTMLDivElement>(null);
   // Load from localStorage on mount
   useEffect(() => {
@@ -80,33 +82,43 @@ const EditorPage = () => {
     setSaveStatus('saving');
   };
 
-  const handlePrint = useReactToPrint(
-    createPrintConfig({
+  const printConfig = React.useMemo(() => {
+    return createPrintConfig({
       contentRef,
       documentTitle: resumeData.personalInfo.fullName || 'resume',
       theme: currentTheme,
       onBeforePrint: async () => {
-        // Wait a moment for fonts to load
-        await new Promise(resolve => setTimeout(resolve, 200));
-      }
-    })
-  );
-  
+        setIsDownloading(true);
+        // Small delay to ensure state sets before print blocks
+        await new Promise(resolve => setTimeout(resolve, 50));
+      },
+      onAfterPrint: () => setIsDownloading(false),
+    });
+  }, [resumeData.personalInfo.fullName, currentTheme]);
+
+  const handlePrint = useReactToPrint({
+    ...printConfig,
+    onPrintError: (errorLocation, error) => {
+      console.error('react-to-print error at', errorLocation, error);
+      setIsDownloading(false);
+    }
+  });
+
 
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-    const el = contentRef.current;
-    if (!el) {
-      throw new Error('Content not available for download');
-    }
-    const dataUrl = await generateFile(el);
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = `${resumeData.personalInfo.fullName || 'resume'}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      const el = contentRef.current;
+      if (!el) {
+        throw new Error('Content not available for download');
+      }
+      const dataUrl = await generateFile(el);
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `${resumeData.personalInfo.fullName || 'resume'}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
     }
     catch (error) {
@@ -116,8 +128,6 @@ const EditorPage = () => {
       setIsDownloading(false);
     }
   }
-
-
 
   return (
     <div className="h-screen flex flex-col bg-muted p-2 ">
@@ -165,23 +175,42 @@ const EditorPage = () => {
             Vercel
           </Button>
         </div>
-        <Button
-          onClick={handleDownload}
-          disabled={isDownloading}
-          variant="default"
-          size="sm"
-          className="flex items-center gap-2"
-        >
-          <Download className="w-4 h-4" />
-          {isDownloading ? 'Generating...' : 'Download'}
-        </Button>
+        <div className='flex gap-4 items-center '>
+
+          <Button
+            onClick={handleDownload}
+            disabled={isDownloading}
+            variant="default"
+            size="sm"
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Download className="w-4 h-4" />
+            {isDownloading ? 'Generating...' : 'Download'}
+          </Button>
+          <Button
+            onClick={() => handlePrint()}
+            disabled={isDownloading}
+            variant="default"
+            size="sm"
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <Printer className="w-4 h-4" />
+            {isDownloading ? 'Printing...' : 'Print'}
+          </Button>
+        </div>
       </div>
 
       {/* Split View */}
       <ResizablePanels
-        leftPanel={<EditorForm data={resumeData} onChange={handleDataChange} />}
-        rightPanel={<ResumePreviewComp ref={contentRef} data={resumeData} theme={currentTheme} />}
+        leftPanel={<ResumePreviewComp ref={contentRef} data={resumeData} theme={currentTheme} />}
+        rightPanel={<ResumePreview data={resumeData} theme={currentTheme} />
+}
       />
+{/* 
+      <div className='w-full'>
+      </div> */}
+
+
     </div>
   );
 };
