@@ -5,9 +5,10 @@ import { pdf } from "@react-pdf/renderer";
 interface CreatePdfBlobProps {
   template: "vercel" | "classic" | "designer";
   resumeData: ResumeData;
+  type?: "pdf" | "image";
 }
 
-export const createPdfBlob = async ({ resumeData, template }: CreatePdfBlobProps) => {
+export const createPdfBlob = async ({ resumeData, template, type }: CreatePdfBlobProps) => {
   const Template = getPdfTemplate(template);
 
   const pdfDocument = <Template data={resumeData} />;

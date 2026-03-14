@@ -34,7 +34,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
   const [editingEducation, setEditingEducation] = useState<Education | null>(null);
   const [socialErrors, setSocialErrors] = useState<Partial<Record<keyof ResumeData['social'], string>>>({});
   const [profileImage, setProfileImage] = useState<string | null>(
-    typeof data?.personalInfo?.image === 'string' ? data.personalInfo.image : String(data.personalInfo.image)
+    typeof data?.personalInfo?.image === 'string' ? data.personalInfo.image : null
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -334,7 +334,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
 
 
   return (
-    <div className="h-full overflow-y-auto nobar overscroll-none bg-background border-l border-b overflow-hidden rounded-bl-md">
+    <div className="h-full overflow-y-auto nobar overscroll-none bg-background overflow-hidden rounded-bl-md">
       <div className="space-y-0">
         {/* Personal Info - Fixed at top */}
         <CollapsibleSection
@@ -523,7 +523,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
                 onChange={handleImageUpload}
               />
               <div
-                className="size-32 bg-white shadow-md cursor-pointer hover:opacity-80 transition-opacity overflow-hidden flex items-center justify-center rounded-lg"
+                className="size-32 bg-input/50 border border-muted cursor-pointer hover:opacity-80 transition-opacity overflow-hidden flex items-center justify-center rounded-lg"
                 onClick={handleImageClick}
               >
                 {profileImage ? (
@@ -534,7 +534,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
                     className="w-full h-full object-cover "
                   />
                 ) : (
-                  <Image className='size-10' />
+                  <Image className='size-10 text-primary opacity-80' />
                 )}
               </div>
             </div>

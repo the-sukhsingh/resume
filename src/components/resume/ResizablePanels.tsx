@@ -51,9 +51,9 @@ export const ResizablePanels: React.FC<ResizablePanelsProps> = ({ leftPanel, rig
   };
 
   return (
-    <div ref={containerRef} className="flex-1 flex overflow-hidden relative ">
+    <div ref={containerRef} className="flex-1 flex overflow-hidden relative border border-t-0 dark:border-neutral-800 rounded-b-lg">
       {/* Left Panel */}
-      <div style={{ width: `${leftWidth}%` }} className="overflow-hidden nobar rounded-bl-sm">
+      <div style={{ width: `${leftWidth}%` }} className="overflow-hidden nobar rounded-bl-lg ">
         {leftPanel}
       </div>
 
@@ -61,8 +61,9 @@ export const ResizablePanels: React.FC<ResizablePanelsProps> = ({ leftPanel, rig
       <div
         onMouseDown={handleMouseDown}
         className={`
-          w-px cursor-col-resize relative group
-          transition-colors duration-200 shrink-0
+          w-[0.5px] cursor-col-resize relative group
+          transition-colors duration-200
+          bg-border
         
         `}
       >
@@ -74,7 +75,7 @@ export const ResizablePanels: React.FC<ResizablePanelsProps> = ({ leftPanel, rig
       </div>
 
       {/* Right Panel */}
-      <div style={{ width: `${100 - leftWidth}%` }} className="overflow-hidden rounded-br-sm">
+      <div style={{ width: `${100 - leftWidth}%` }} className="overflow-hidden rounded-br-lg">
         {rightPanel}
       </div>
     </div>

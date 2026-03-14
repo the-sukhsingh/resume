@@ -6,55 +6,57 @@ import PDFError from "./helper/pdf-error";
 import PDFLoading from "./helper/pdf-loading";
 import { Document, Page, pdfjs } from "react-pdf";
 import { ResumeData } from "@/types/resume";
+import { cloneDeep, debounce, isEqual } from "lodash";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
-const PDF_VIEWER_PADDING = 18;
 
-const PDFViewer = ({ url}: { url: string | null; }) => {
+const PDFViewer = ({ url }: { url: string | null; }) => {
     const [error, setError] = useState<Error | null>(null);
-
-
     // Show empty state if the url is not loaded
     if (!url) {
         return null;
     }
 
     return (
-        <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex h-full w-full items-center justify-center">
             <Document
                 file={url}
                 loading={null}
                 onLoadError={(error) => {
                     console.error("[ERROR]: Error loading PDF:", error);
-                    // Send the error to Sentry
                     setError(error);
-
                 }}
-                className="scroll-bar-hidden dark:bg-background flex h-full max-h-full w-full items-center justify-center overflow-y-scroll py-4.5 sm:items-start"
+                className="nobar dark:bg-background flex h-full max-h-full w-full items-center justify-center overflow-y-scroll py-4.5 sm:items-start"
             >
                 {!error && (
                     <Page
                         pageNumber={1}
                         renderTextLayer={false}
                         renderAnnotationLayer={false}
+                        className={'w-auto'}
                     />
                 )}
             </Document>
-            {/* <iframe
-                src={url}
-                title="PDF Preview"
-                className="h-full w-full rounded-sm border border-neutral-300"
-                allowFullScreen
-            /> */}
         </div>
     );
 };
 
-const ResumePreview = ({ data, theme }: { data: ResumeData, theme: "classic" | "designer" | "vercel" }) => {
+const ResumePreview = ({ resumeData, theme }: { resumeData: ResumeData, theme: "classic" | "designer" | "vercel" }) => {
     const [pdfError, setPdfError] = useState<string | null>(null);
     const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
+    const [data, setData] = useState<ResumeData>(resumeData);
 
+    // Set data from props on mount and when resumeData changes with debounced effect
+    const debouncedSetData = useRef(
+        debounce((newData: ResumeData) => {
+            setData((prevData) => (isEqual(prevData, newData) ? prevData : cloneDeep(newData)));
+        }, 500)
+    ).current;
+
+    useEffect(() => {
+        debouncedSetData(resumeData);
+    }, [resumeData, debouncedSetData]);
 
     // Effect to generate PDF when data changes
     useEffect(() => {
@@ -94,13 +96,13 @@ const ResumePreview = ({ data, theme }: { data: ResumeData, theme: "classic" | "
     }
 
     return (
-        <div  className="scroll-bar-hidden bg-sidebar h-full w-full overflow-y-auto">
+        <div className="nobar bg-sidebar h-full w-full overflow-y-auto">
             {!generatedPdfUrl ? (
-                <div className="h-full w-full">
+                <div className="h-full w-full mx-auto">
                     <PDFLoading />
                 </div>
             ) : (
-                <PDFViewer url={generatedPdfUrl}  />
+                <PDFViewer url={generatedPdfUrl} />
             )}
         </div>
     );

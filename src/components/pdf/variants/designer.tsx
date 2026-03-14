@@ -4,7 +4,7 @@ import { Document, Page, Text as TextR, View as ViewR, Image, Font, Link } from 
 import { createTw } from "react-pdf-tailwind";
 import { cn } from "@/lib/utils";
 import { ResumeData } from '@/types/resume';
-import { CORMORANT_GARAMOND_FONT,MONTSERRAT_FONT,LEAGUE_SPARTAN_FONT } from '@/constants/pdf-fonts';
+import { CORMORANT_GARAMOND_FONT, MONTSERRAT_FONT, LEAGUE_SPARTAN_FONT } from '@/constants/pdf-fonts';
 
 // Register fonts
 Font.register({
@@ -80,7 +80,7 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
           }]}>
             {personalInfo.fullName || "Morgan Maxwell"}
           </TextR>
-          <ViewR style={[tw(cn("flex-row justify-between items-center text-xs uppercase tracking-wider ")),{
+          <ViewR style={[tw(cn("flex-row justify-between items-center text-xs uppercase tracking-wider ")), {
             fontFamily: "League Spartan"
           }]}>
             <Text className="text-[8px]">{personalInfo.headline || ""}</Text>
@@ -142,18 +142,39 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
           </View>
         </View>
 
+        {/* Work Experience */}
+        {experience.length > 0 && (
+          <View className="mb-8">
+            <Heading>WORK EXPERIENCE</Heading>
+            <View className="grid grid-cols-3 gap-6">
+              {experience.map((exp, idx) => (
+                <View key={exp.id} className="text-xs font-montserrat">
+                  <Text className="font-league-spartan font-semibold uppercase text-sm mb-1" font='League Spartan'>
+                    {exp.company} | {exp.position}
+                  </Text>
+                  <Text className='mb-2'>{exp.startDate}-{exp.current ? 'Present' : exp.endDate}</Text>
+                  <View className="text-justify leading-relaxed">
+                    {exp.description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet."}
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+
+
 
         {/* Projects */}
         {projects.length > 0 && (
           <View className="mb-8">
             <Heading>PROJECTS</Heading>
             <View className="flex-row flex-wrap gap-y-6">
-              {projects.slice(0, experience.length > 0 ? 3 : 6).map((proj, idx) => (
-                <View key={proj.id} className={cn("w-1/3 text-xs px-3 ", 
-                idx === 2 && "pr-0 ",
-                idx === 0 && "pl-0 ",
-                experience.length === 0 && idx === 3 && "pl-0 ",
-                experience.length === 0 && idx === 5 && "pr-0 "
+              {projects.map((proj, idx) => (
+                <View key={proj.id} className={cn("w-1/3 text-xs px-3 ",
+                  idx === 0 && "pl-0 ",
+                  idx === 2 && "pr-0 ",
+                  idx === 3 && "pl-0 ",
+                  idx === 5 && "pr-0 "
                 )}>
                   <Link href={proj.link ? proj.link : "/editor"} style={[tw(cn("text-sm mb-1")), {
                     textDecoration: "none",
@@ -181,7 +202,7 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
               <View className='w-1/3'>
                 <Heading>LANGUAGES</Heading>
                 <View className="gap-2 text-sm ">
-                  {languages.slice(0, 4).map((lang, idx) => (
+                  {languages.map((lang, idx) => (
                     <View key={idx} className="items-start justify-start">
                       <TextR key={idx} style={[tw(cn("relative")), {
                         fontFamily: "Montserrat"
@@ -198,7 +219,7 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
             <View className='w-1/3'>
               <Heading>SKILLS</Heading>
               <View className="gap-2 text-sm ">
-                {skills.slice(0, 5).map((skill, idx) => (
+                {skills.map((skill, idx) => (
                   <ViewR key={idx} style={[tw(cn("relative")), {
                     fontFamily: "Montserrat"
                   }]}>
@@ -217,10 +238,10 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
             <View className='w-1/3'>
               <Heading>EDUCATION</Heading>
               <View className="gap-3 text-xs ">
-                {education.slice(0, 2).map((edu) => (
+                {education.map((edu) => (
                   <View key={edu.id} className="flex-row justify-between">
                     <View className=''>
-                      <Text className="text-sm uppercase">{edu.institution}</Text>
+                      <Text className="text-sm uppercase font-semibold">{edu.institution}</Text>
                       <Text className="text-xs">{edu.degree} - {edu.field}</Text>
                     </View>
                     <Text font="League Spartan">{edu.startDate}-{edu.current ? 'Present' : edu.endDate}</Text>
@@ -241,7 +262,7 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
             <View className='w-1/3'>
               <Heading>ACHIEVEMENTS</Heading>
               <View className="text-xs gap-2 ">
-                {achievements.slice(0, 2).map((achievement) => (
+                {achievements.map((achievement) => (
                   <View key={achievement.id}>
                     <Text className="text-sm font-semibold uppercase" font="League Spartan">{achievement.title}</Text>
                     <Text className="leading-relaxed">{achievement.description}</Text>
@@ -256,11 +277,11 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
           {/* Certificates */}
           {certificates.length > 0 && (
 
-            <View className="w-2/3">
+            <View className="w-2/3 relative">
               <Heading>CERTIFICATES</Heading>
-              <View className="flex-row gap-6">
-                {certificates.slice(0, 3).map((cert) => (
-                  <View key={cert.id} className="text-xs  w-1/3">
+              <View className="flex-row flex-wrap gap-y-3">
+                {certificates.map((cert) => (
+                  <View key={cert.id} className="text-xs w-1/3">
                     <Text className="text-sm font-semibold uppercase mb-1" font="League Spartan">{cert.name}</Text>
                     <Text className="italic mb-2">{cert.date}</Text>
                     <Text className="leading-relaxed">
@@ -281,7 +302,7 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
 }
 
 
-const View = ({ children, className, font }: { children: React.ReactNode, className?: string, font?:string }) => (
+const View = ({ children, className, font }: { children: React.ReactNode, className?: string, font?: string }) => (
   <ViewR style={[tw(cn("flex flex-col", className)), {
     fontFamily: font || "Montserrat",
   }]}>
@@ -289,7 +310,7 @@ const View = ({ children, className, font }: { children: React.ReactNode, classN
   </ViewR>
 )
 
-const Text = ({ children, className, font }: { children: React.ReactNode, className?: string, font?:string }) => (
+const Text = ({ children, className, font }: { children: React.ReactNode, className?: string, font?: string }) => (
   <TextR style={[tw(cn("text-sm text-left", className)), {
     fontFamily: font || "Montserrat",
   }]}>

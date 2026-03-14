@@ -72,14 +72,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="nobar ">
       <body
         className={`${dmSans.variable} ${playfair.variable} ${libreBaskerville.variable} ${cormorantGaramond.variable} ${leagueSpartan.variable} ${montserrat.variable} ${inter.variable} ${geist.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <div className="fixed top-2 right-2">
-            <ModeToggle />
-            </div>
           {children}
         </Providers>
       </body>

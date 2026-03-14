@@ -21,11 +21,11 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, isOpen, 
 
 
   return (
-    <div className="border-b border-muted overflow-hidden">
+    <div className="overflow-hidden">
       <div
         onClick={handleToggle}
         className={cn(`w-full cursor-pointer flex items-center justify-between px-3 py-2 transition-colors border-b`,
-            isOpen ? "bg-muted text-cyan-800 dark:text-cyan-400": "hover:bg-muted"
+            isOpen ? "bg-muted text-cyan-700 dark:text-cyan-500": "hover:bg-muted"
         )}
       >
         <h2 className="font-sans font-medium text-sm select-none flex-1 pointer-events-none">{title}</h2>
@@ -35,9 +35,6 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, isOpen, 
           type="button"
         >
           <motion.div
-            // initial={{
-            //   rotateX: 180
-            // }}
             animate={{ rotateX: isOpen ? 180 : 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
           >
@@ -48,6 +45,7 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({ title, isOpen, 
       <AnimatePresence initial={false} mode="wait">
         {isOpen && (
           <motion.div
+          className='border-b'
             key={`content-${sectionKey}`}
             initial={{ height: 0, opacity: 0, filter: "blur(2px)" }}
             animate={{ 

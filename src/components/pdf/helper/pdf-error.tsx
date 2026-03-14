@@ -1,5 +1,4 @@
 import { FileTextIcon } from "lucide-react";
-import React from "react";
 
 const PDFError = ({ message, title }: { message: string; title?: string }) => {
   return (

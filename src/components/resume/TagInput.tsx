@@ -43,12 +43,12 @@ export const TagInput: React.FC<TagInputProps> = ({ tags, onChange, placeholder 
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="inline-flex items-center gap-1 px-2.5 pb-1 pt-0.5 bg-cherry/20 text-cherry text-sm rounded-md border border-cherry"
+              className="inline-flex items-center gap-1 px-2.5 pb-1 pt-0.5  text-sm rounded-md border"
             >
               {tag}
               <button
                 onClick={() => removeTag(index)}
-                className="hover:bg-cherry/20 flex justify-center items-center rounded-full p-0.5 transition-colors mt-0.5"
+                className="flex justify-center items-center rounded-full p-0.5 transition-colors mt-0.5"
               >
                 <X className="w-3 h-3" />
               </button>

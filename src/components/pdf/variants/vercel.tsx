@@ -144,6 +144,81 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                 )}
 
 
+                {/* Experience Section */}
+                {experience.length > 0 && (
+                    <>
+                        <View className="pt-4">
+                            <Heading className="mb-4 ml-5">
+                                Experience
+                            </Heading>
+                            <View className="flex-row flex-wrap gap-y-0 border-y border-neutral-800 bg-black/30">
+                                {experience.map((exp) => (
+                                    <View
+                                        key={exp.id}
+                                        className="w-1/2 border-r gap-4 border-b border-neutral-800 px-5 max-h-30 overflow-hidden py-4 last:border-b-0"
+                                    >
+
+                                        <View className="min-w-0 gap-y-2">
+                                            <View className="flex-row items-start justify-between gap-4">
+                                                <View className="min-w-0">
+                                                    <Text className="text-lg font-semibold leading-none text-white">
+                                                        {exp.position}
+                                                    </Text>
+                                                    <Text className="mt-1 text-sm text-neutral-400">
+                                                        {exp.company}
+                                                    </Text>
+
+                                                </View>
+                                                <View className="shrink-0 gap-y-1 items-end text-xs font-geistmono uppercase tracking-[0.16em] text-neutral-400">
+                                                    <TextR style={[tw(cn("text-xs tracking-[0.2em] text-neutral-300 text-right")), {
+                                                        fontFamily: "Geist",
+                                                        letterSpacing: "0.2rem",
+                                                    }]}>
+                                                        {exp.startDate} - {exp.current ? 'Present' : exp.endDate}
+                                                    </TextR>
+                                                    {exp.location && (
+                                                        <TextR style={[tw(cn("text-xs tracking-[0.2em] text-neutral-300 ")), {
+                                                            fontFamily: "Geist",
+                                                            letterSpacing: "0.2rem",
+                                                        }]}>
+                                                            {exp.location}
+                                                        </TextR>
+                                                    )}
+                                                </View>
+                                            </View>
+
+                                            <Text className="line-clamp-2 wrap-break-word text-sm leading-6 text-neutral-300" >
+                                                {exp.description}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                ))}
+                                {
+                                    (experience.length % 2 === 1) && (
+                                        <View className="w-1/2 h-28">
+                                            <Svg style={tw(cn("w-full"))} preserveAspectRatio='none' viewBox={'0 0 400 200'}>
+                                                {Array.from({ length: 100 }).map((_, i) => (
+                                                    <Line
+                                                        key={i}
+                                                        x1={i * 12 - 200}
+                                                        y1={208}
+                                                        x2={i * 12}
+                                                        y2={-8}
+                                                        stroke="#525252"
+                                                        strokeWidth={projects.length === 1 ? 0.24 : 0.3}
+                                                    />
+                                                ))}
+                                            </Svg>
+                                        </View>
+                                    )
+                                }
+                            </View>
+                        </View>
+                    </>
+                )}
+
+
+
 
                 {/* Projects Section */}
                 {projects.length > 0 && (
@@ -153,16 +228,13 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                                 Projects
                             </Heading>
                             <View className="flex flex-row flex-wrap bg-black/20">
-
-                                {projects.slice(0, experience.length > 0 ? 3 : 6).map((project, idx) => (
+                                {projects.map((project, idx) => (
                                     <ViewR
                                         key={project.id}
                                         style={tw(cn("w-1/3 flex flex-row min-h-40 flex-col gap-1 pl-5 pr-3 py-4 border-neutral-800",
-                                            experience.length > 0 ? "border-t" : "border-y",
-                                            (idx === 0 || idx === 1) && "border-r",
-                                            experience.length === 0 && idx > 2 && idx < 6 && "border-r border-y-0",
+                                            "border-t",
+                                            (idx === 0 || idx === 1 || idx === 3 || idx === 4) && "border-r",
                                         ))}
-
                                     >
                                         <View className="flex flex-row items-start justify-between gap-3 mb-1">
                                             <Text className="text-lg font-semibold leading-none text-white">
@@ -206,43 +278,23 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                                     </ViewR>
                                 ))}
 
-                                {/* TODO: Background is not any property */}
-                                {projects.length > 0 && projects.length < 3 && (
-                                    <ViewR style={[tw(cn("border-neutral-800 border"
+                                {projects.length > 0 && (
+                                    projects.length % 3 !== 0 
+                                ) && (
+                                    <ViewR style={[tw(cn("border-t border-neutral-800"
                                     )), {
-                                        width: projects.length === 1 ? "66.66%" : "33.33%",
-                                        }]} >
+                                        width: projects.length === 1 ? "66.66%" : projects.length === 2 ? "33.33%" : projects.length === 4 ? "66.66%" : "33.33%",
+                                    }]} >
                                         <Svg height="120" width="100%" preserveAspectRatio='none' viewBox={projects.length === 1 ? '0 0 400 200' : '0 0 250 200'}>
                                             {Array.from({ length: 100 }).map((_, i) => (
                                                 <Line
                                                     key={i}
-                                                    x1={i * 8 - 200}
+                                                    x1={i * (projects.length === 1 ? 8 : 10) - 200} // single - 11
                                                     y1={208}
-                                                    x2={i * 8}
+                                                    x2={i * (projects.length === 1 ? 8 : 10)} // single - 11
                                                     y2={-8}
                                                     stroke="#525252"
                                                     strokeWidth={projects.length === 1 ? 0.24 : 0.3}
-                                                />
-                                            ))}
-                                        </Svg>
-                                        </ViewR>
-                                )}
-                                {experience.length === 0 && projects.length > 3 && projects.length < 6 && (
-                                    <ViewR style={[tw(cn("",
-                                    )), {
-                                        width: projects.length === 4 ? "66.66%" : "33.33%",
-
-                                        }]} >
-                                        <Svg height="120" width="100%" preserveAspectRatio='none' viewBox={projects.length === 4 ? '0 0 400 200' : '0 0 250 200'}>
-                                            {Array.from({ length: 100 }).map((_, i) => (
-                                                <Line
-                                                    key={i}
-                                                    x1={i * 8 - 200}
-                                                    y1={208}
-                                                    x2={i * 8}
-                                                    y2={-8}
-                                                    stroke="#525252"
-                                                    strokeWidth={projects.length === 4 ? 0.24 : 0.3}
                                                 />
                                             ))}
                                         </Svg>
@@ -264,7 +316,7 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                                     Skills
                                 </Heading>
                                 <View className="flex flex-row flex-wrap gap-x-3 gap-y-1.5 ml-5">
-                                    {skills.slice(0, 5).map((skill, idx) => (
+                                    {skills.map((skill, idx) => (
                                         <View
                                             key={idx}
                                         >
@@ -288,7 +340,7 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                                     Languages
                                 </Heading>
                                 <View className="flex flex-row flex-wrap gap-x-3 gap-y-1.5 ml-5">
-                                    {languages.slice(0, 5).map((language, idx) => (
+                                    {languages.map((language, idx) => (
                                         <View key={idx} >
                                             <TextR style={[tw(cn("text-[8px] uppercase tracking-[0.16em]")),
                                             {
@@ -313,7 +365,7 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                                 Education
                             </Heading>
                             <View className="gap-4">
-                                {education.slice(0, 3).map((edu) => (
+                                {education.map((edu) => (
                                     <View key={edu.id} className="gap-0.5">
                                         <View className=" flex flex-row items-center justify-between gap-3">
                                             <Text className="text-sm font-semibold text-white">
@@ -403,22 +455,31 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
 
                 </View>) : null}
 
-                <ViewR style={tw(cn("flex-1 relative",
-                ))} >
-                    <Svg preserveAspectRatio='none' viewBox='0 0 600 200' style={tw(cn("h-full w-full absolute top-0 left-0"))}>
-                        {Array.from({ length: 100 }).map((_, i) => (
-                            <Line
-                                key={i}
-                                x1={i * 8 - 200}
-                                y1={208}
-                                x2={i * 8}
-                                y2={-8}
-                                stroke="#525252"
-                                strokeWidth={0.24}
-                            />
-                        ))}
-                    </Svg>
-                </ViewR>
+                {
+                    (experience.length !== 0 || projects.length !== 0) &&
+                    (skills.length !== 0 || languages.length !== 0) &&
+                    (certificates.length !== 0 || achievements.length !== 0 || education.length !== 0) &&
+                    (summary && summary.trim() !== "") && (
+                        <ViewR style={tw(cn("flex-1 relative",
+                        ))} >
+                            <Svg preserveAspectRatio='none' viewBox='0 0 600 200' style={tw(cn("h-full w-full absolute top-0 left-0"))}>
+                                {Array.from({ length: 100 }).map((_, i) => (
+                                    <Line
+                                        key={i}
+                                        x1={i * 8 - 200}
+                                        y1={208}
+                                        x2={i * 8}
+                                        y2={-8}
+                                        stroke="#525252"
+                                        strokeWidth={0.24}
+                                    />
+                                ))}
+                            </Svg>
+                        </ViewR>
+                    )
+                }
+
+
             </Page>
         </Document>
     )
@@ -430,8 +491,12 @@ const View = ({ children, className }: { children: React.ReactNode, className?: 
     </ViewR>
 )
 
-const Text = ({ children, className }: { children: React.ReactNode, className?: string }) => (
-    <TextR style={tw(cn("text-sm text-neutral-300", className))}>
+const Text = ({ children, className, font }: { children: React.ReactNode, className?: string, font?: string }) => (
+    <TextR style={[tw(cn("text-sm text-neutral-300", className)),
+    {
+        fontFamily: font || "Geist",
+    }
+    ]}>
         {children}
     </TextR>
 );
@@ -447,11 +512,11 @@ const Heading = ({ children, className }: { children: React.ReactNode, className
     </TextR>
 );
 
-const SocialLink = ({ url, children, className }: { url: string, children: React.ReactNode, className?:string }) => (
+const SocialLink = ({ url, children, className }: { url: string, children: React.ReactNode, className?: string }) => (
     <Link
         href={url}
         src={url}
-        style={[tw(cn("relative border-r border-neutral-800 px-2 py-0.5  font-geistmono text-[8px] uppercase tracking-[0.18em] text-neutral-200 transition-colors hover:text-white",className)),
+        style={[tw(cn("relative border-r border-neutral-800 px-2 py-0.5  font-geistmono text-[8px] uppercase tracking-[0.18em] text-neutral-200 transition-colors hover:text-white", className)),
         {
             textDecoration: "none",
             letterSpacing: "0.1rem",
