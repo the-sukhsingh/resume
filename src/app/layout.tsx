@@ -104,7 +104,7 @@ export const metadata: Metadata = {
     url: '/',
     siteName: 'Resume Editor',
     // Uncomment when you have an og-image:
-    images: [{ url: '/images/og-image.png', width: 1920, height: 1080 }],
+    images: [{ url: '/og-image.png', width: 1920, height: 1080 }],
     locale: 'en_US',
     type: 'website',
   },

@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: { category: string;
       modifiedTime: data.updatedAt,
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-image.jpg`,
+          url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-image.png`,
           width: 1200,
           height: 630,
           alt: data.title,
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: { params: { category: string;
       card: 'summary_large_image',
       title: data.title,
       description: data.description,
-      images: [`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-image.jpg`],
+      images: [`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-image.png`],
     },
   };
 }
