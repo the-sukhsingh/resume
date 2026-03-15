@@ -36,7 +36,7 @@ const Manager: React.FC<ManagerProps> = ({ theme, onThemeChange, onDownloadImage
     return (
         < div className='bg-background flex items-center justify-between py-2 border-b border-x px-4' >
             <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">Theme:</span>
+                <span className="text-sm font-medium">Theme</span>
                 <Select defaultValue={theme} onValueChange={(value) => onThemeChange(value as "classic" | "designer" | "vercel")}> 
                     <SelectTrigger className="w-30 focus-visible:ring-0">
                         <SelectValue  />

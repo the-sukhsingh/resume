@@ -110,11 +110,11 @@ const SolidCard = ({ children, ...props }: HTMLMotionProps<"div">) => {
     return (
         <AnimatePresence mode='popLayout'>
             <motion.div
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ translateZ: -10, translateX: -5, translateY: -5 }}
                 whileTap={{ scale: 0.98 }}
                 exit={{ opacity: 0 }}
-                transition={{ ease: "easeInOut", duration: 0.4 }}
-                className='w-28 h-40 aspect-9/16 bg-neutral-100 dark:bg-[#161616] border border-neutral-300 dark:border-neutral-800 rounded-lg relative overflow-hidden cursor-pointer shadow-md'
+                transition={{ ease: "easeInOut", duration: 0.3 }}
+                className='w-28 h-40 aspect-9/16 bg-neutral-100 dark:bg-[#161616] border border-neutral-300 dark:border-neutral-800 rounded-lg relative overflow-hidden cursor-pointer shadow-md focus-visible:outline-none focus-visible:ring-0' 
                 {...props}
             >
                 {children}

@@ -124,8 +124,8 @@ const Features = () => {
                         </div>
                     </div>
 
-                    <div className="relative z-10 flex h-40 w-full items-center justify-center rounded-xl bg-linear-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/50 dark:to-neutral-900 border border-neutral-100 dark:border-neutral-800 overflow-hidden group-hover:shadow-inner transition-all group-hover:border-neutral-200 dark:group-hover:border-neutral-700">
-                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+                    <div className="relative z-10 flex h-40 w-full items-center justify-center rounded-xl bg-linear-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900/50 dark:to-neutral-900 overflow-hidden">
+                        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]"></div>
 
                         <div className="relative flex items-center justify-center h-16 w-52 rounded-xl bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-sm group-hover:shadow-lg group-hover:shadow-blue-500/10 transition-all duration-500 group-hover:-translate-y-1 z-10">
                             <div className="flex items-center gap-3 w-full px-4">

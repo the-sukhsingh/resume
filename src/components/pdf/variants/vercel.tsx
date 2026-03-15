@@ -53,6 +53,9 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
         summary
     } = data;
 
+    const url = new URL(social.website || "https://www.google.com")
+
+
     return (
         <Document
             title={`Resume-${data.personalInfo.fullName}`}
@@ -61,7 +64,7 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
             producer="Resumely"
         >
             <Page size="A4" style={tw(cn("font-default text-sm text-white bg-[#040404]"))}>
-                <View className='flex-row w-full justify-between items-end border-b border-neutral-800  px-5 pb-2 pt-6 '>
+                <View className='flex-row w-full justify-between items-end border-b border-neutral-800 px-5 pb-2 pt-6 '>
                     <View className="">
                         <Text className="mb-2 text-5xl font-bold leading-none tracking-tight text-white">
                             {personalInfo.fullName || "Your Name"}
@@ -78,28 +81,25 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                             </TextR>
                         )}
                     </View>
-                    {/* Location & Contact */}
+                    {/* Website */}
 
-                    <View className='text-end items-end'>
-                        {personalInfo.location && (
-                            <Text >{personalInfo.location}{personalInfo.country ? `, ${personalInfo.country}` : ''}</Text>
-                        )}
-                        {personalInfo.phone && (
-                            <Text>{personalInfo.phone}</Text>
-                        )}
-                    </View>
+                    <Link src={social.website || `https://${url.hostname}`} style={[tw(cn("text-xs mb-0.5 font-geistmono uppercase text-white tracking-[0.16em] transition-colors",
+                    )),
+                    {
+                        textDecoration: "none",
+                        letterSpacing: "0.16rem",
+                        fontFamily: "GeistMono",
+                    }]}>
+                        {url.hostname.replace("www.", "")}
+                    </Link>
+
                 </View>
-                {personalInfo.location || personalInfo.phone || social.email || social.website || social.github || social.linkedin ? (<View className="flex flex-row items-center justify-between border-b border-neutral-800 px-5 py-1.5 text-[8px]">
+                {personalInfo.location || personalInfo.phone || social.email || social.github || social.linkedin || social.twitter || personalInfo.country || personalInfo.location || personalInfo.phone ? (<View className="flex flex-row items-center justify-between border-b border-neutral-800 px-5 py-1.5 text-[8px]">
                     {/* Quick Links Bar */}
                     <View className="flex flex-row flex-nowrap items-center">
                         {social.email && (
                             <SocialLink url={`mailto:${social.email}`} className="border-l">
                                 Email
-                            </SocialLink>
-                        )}
-                        {social.website && (
-                            <SocialLink url={social.website}>
-                                Website
                             </SocialLink>
                         )}
                         {social.github && (
@@ -126,6 +126,15 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                             <SocialLink url={social.instagram}>
                                 Instagram
                             </SocialLink>
+                        )}
+                    </View>
+
+                    <View className='flex-row justify-end gap-1'>
+                        {personalInfo.location && (
+                            <Text >{personalInfo.location}{personalInfo.country ? `, ${personalInfo.country}` : ''}</Text>
+                        )}
+                        {personalInfo.phone && (
+                            <Text>{personalInfo.phone}</Text>
                         )}
                     </View>
 
@@ -279,27 +288,27 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                                 ))}
 
                                 {projects.length > 0 && (
-                                    projects.length % 3 !== 0 
+                                    projects.length % 3 !== 0
                                 ) && (
-                                    <ViewR style={[tw(cn("border-t border-neutral-800"
-                                    )), {
-                                        width: projects.length === 1 ? "66.66%" : projects.length === 2 ? "33.33%" : projects.length === 4 ? "66.66%" : "33.33%",
-                                    }]} >
-                                        <Svg height="120" width="100%" preserveAspectRatio='none' viewBox={projects.length === 1 ? '0 0 400 200' : '0 0 250 200'}>
-                                            {Array.from({ length: 100 }).map((_, i) => (
-                                                <Line
-                                                    key={i}
-                                                    x1={i * (projects.length === 1 ? 8 : 10) - 200} // single - 11
-                                                    y1={208}
-                                                    x2={i * (projects.length === 1 ? 8 : 10)} // single - 11
-                                                    y2={-8}
-                                                    stroke="#525252"
-                                                    strokeWidth={projects.length === 1 ? 0.24 : 0.3}
-                                                />
-                                            ))}
-                                        </Svg>
-                                    </ViewR>
-                                )}
+                                        <ViewR style={[tw(cn("border-t border-neutral-800"
+                                        )), {
+                                            width: projects.length === 1 ? "66.66%" : projects.length === 2 ? "33.33%" : projects.length === 4 ? "66.66%" : "33.33%",
+                                        }]} >
+                                            <Svg height="120" width="100%" preserveAspectRatio='none' viewBox={projects.length === 1 ? '0 0 400 200' : '0 0 250 200'}>
+                                                {Array.from({ length: 100 }).map((_, i) => (
+                                                    <Line
+                                                        key={i}
+                                                        x1={i * (projects.length === 1 ? 8 : 10) - 200} // single - 11
+                                                        y1={208}
+                                                        x2={i * (projects.length === 1 ? 8 : 10)} // single - 11
+                                                        y2={-8}
+                                                        stroke="#525252"
+                                                        strokeWidth={projects.length === 1 ? 0.24 : 0.3}
+                                                    />
+                                                ))}
+                                            </Svg>
+                                        </ViewR>
+                                    )}
                             </View>
                         </View>
                     </>
