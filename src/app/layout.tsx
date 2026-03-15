@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Playfair_Display, Libre_Baskerville, Cormorant_Garamond, League_Spartan, Montserrat, Inter, Geist, Geist_Mono,  } from "next/font/google";
+import { DM_Sans, Playfair_Display, Libre_Baskerville, Cormorant_Garamond, League_Spartan, Montserrat, Inter, Geist, Geist_Mono, } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { ModeToggle } from "@/components/theme/ThemeToggle";
@@ -56,28 +56,28 @@ const geist = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets:["latin"],
-    weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 })
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://yourdomain.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://resumely.sukhjitsingh.me'),
   title: {
     default: "Free Resume Builder & CV Maker | Resume Editor",
     template: "%s | Resume Editor"
   },
   description: "Build a professional, ATS-friendly resume in minutes. Features live preview, customizable templates, and instant PDF download. Perfect for software engineers, marketers, and all job seekers.",
   keywords: [
-    "resume builder", "free resume maker", "CV maker", "ATS friendly resume", "professional resume templates", 
-    "online resume creator", "resume editor", "resume generator", "job application", "career", "PDF resume", 
-    "live preview resume", "software engineer resume", "format resume", "stand out resume", "2026 resume templates", 
+    "resume builder", "free resume maker", "CV maker", "ATS friendly resume", "professional resume templates",
+    "online resume creator", "resume editor", "resume generator", "job application", "career", "PDF resume",
+    "live preview resume", "software engineer resume", "format resume", "stand out resume", "2026 resume templates",
     "programmatic SEO resume", "online CV builder", "create resume online", "best resume builder", "simple resume maker",
-    "modern resume templates", "minimalist resume", "resume formatter", "resume builder for freshers", 
+    "modern resume templates", "minimalist resume", "resume formatter", "resume builder for freshers",
     "entry level resume builder", "executive resume templates", "manager resume examples", "student resume maker",
     "internship resume", "tech resume", "IT resume templates", "developer resume builder", "front end developer resume",
     "full stack engineer resume", "data scientist resume", "product manager resume", "marketing resume planner",
-    "sales resume templates", "teacher resume examples", "nurse CV templates", "healthcare resume", 
+    "sales resume templates", "teacher resume examples", "nurse CV templates", "healthcare resume",
     "finance resume builder", "accounting resume", "investment banking resume", "graphic design resume",
     "creative resume templates", "freelance resume", "remote job resume", "work from home resume",
     "ATS optimization", "beat the ATS", "resume keyword optimization", "resume passing score",
@@ -92,7 +92,7 @@ export const metadata: Metadata = {
     "resume objective statement", "cover letter builder", "job winning resume", "hireable resume",
     "interview ready resume", "career change resume", "military transition resume", "return to work resume",
     "gap in employment resume", "customizable resume", "editable resume template", "resume builder no watermark",
-    "free download resume", "resume privacy", "secure resume builder", "react resume builder", 
+    "free download resume", "resume privacy", "secure resume builder", "react resume builder",
     "open source resume templates", "NextJS resume builder"
   ],
   authors: [{ name: "Resume Editor" }],
@@ -112,6 +112,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     creator: '@yourhandle',
     title: 'Free Resume Builder & CV Maker | Resume Editor',
+    images: [`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-image.png`],
     description: 'Build a professional, ATS-friendly resume in minutes. Features live preview, customizable templates, and instant PDF download.',
   },
   robots: {
