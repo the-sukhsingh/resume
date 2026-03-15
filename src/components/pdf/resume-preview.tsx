@@ -61,12 +61,10 @@ const ResumePreview = ({ resumeData, theme }: { resumeData: ResumeData, theme: "
     // Effect to generate PDF when data changes
     useEffect(() => {
         setPdfError(null);
-
         (async () => {
             try {
                 const blob = await createPdfBlob({ resumeData: data, template: theme });
                 const newUrl = createBlobUrl({ blob });
-
                 setGeneratedPdfUrl(newUrl);
             } catch (err) {
                 setPdfError(String(err instanceof Error ? err.message : "An unknown error occurred while generating the PDF."));

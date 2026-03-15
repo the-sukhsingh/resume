@@ -109,7 +109,7 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  --cherry: oklch(53.73% 0.14709 261.662);  
+  --cherry: oklch(53.73% 0.14709 261.662);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -175,6 +175,81 @@ body {
   /* Firefox */
 }
 
-.print-preview{
+.print-preview {
   @apply p-0 m-0 bg-white text-black;
+}
+/* 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: get-out 0.3s ease;
+}
+
+::view-transition-new(root) {
+  animation: get-in 0.3s ease;
+}
+*/
+@keyframes get-out {
+  from {
+    translate: 0;
+  }
+  to {
+    translate: translateX(-100%);
+  }
+}
+
+@keyframes get-in {
+  from {
+    translate: translateX(100%);
+  }
+
+  to {
+    translate: 0;
+  }
+} 
+/* Global view-transition timing */
+::view-transition-group(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}
+
+/* Light mode enter */
+::view-transition-new(root) {
+  animation-name: reveal-dark;
+  animation-fill-mode: both;
+}
+
+/* Prevent outgoing frame from animating */
+::view-transition-old(root),
+.dark::view-transition-old(root) {
+  animation: none;
+  animation-fill-mode: both;
+  z-index: -1;
+}
+
+/* Dark mode enter */
+.dark::view-transition-new(root) {
+  animation-name: reveal-dark;
+  animation-fill-mode: both;
+}
+
+@keyframes reveal-dark {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes reveal-light {
+  from {
+    clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
+  }
+
+  to {
+    clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+  }
 }

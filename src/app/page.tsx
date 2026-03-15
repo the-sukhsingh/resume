@@ -4,19 +4,20 @@ import Cluster from "@/components/Cluster";
 import Footer from "@/components/Footer";
 import Features from "@/components/Features";
 import Link from "next/link";
+import { ViewTransitionLink } from "@/components/TransitionLink";
 export default function Home() {
 
 
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-neutral-900 dark:bg-black dark:text-neutral-50 max-w-5xl mx-auto border-x border-dashed border-neutral-300 dark:border-neutral-800  overflow-hidden nobar">
       <header className="border-b border-dashed border-neutral-300 dark:border-neutral-800 px-4 py-3 flex justify-between items-center rounded-t-lg backdrop-blur-lg">
-        <Link href={"/"} className='flex items-start justify-center gap-2'>
+        <ViewTransitionLink href={"/"} className='flex items-start justify-center gap-2'>
           <span className='size-8 bg-linear-to-br from-cherry/80 to-cherry inline-flex justify-center items-center rounded-lg shadow-[0_0_2px_1px_inset_rgba(0,0,0,0.1)] dark:shadow-[0_0_2px_2px_inset_rgba(255,255,255,0.1)] p-1.5 relative after:content-[""] after:absolute after:inset-0 after:rounded-lg after:border-t after:border-neutral-400'>
 
             <FileText className="text-white" />
           </span>
           <h1 className="font-cormorant  text-3xl font-semibold">Resume Editor</h1>
-        </Link>
+        </ViewTransitionLink>
         <div className="flex gap-0 items-center justify-end">
           <Link href="https://x.com/thesukhjitbajwa" target="_blank" className="text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors mr-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="size-6" viewBox="0 0 256 256"><path d="M214.75,211.71l-62.6-98.38,61.77-67.95a8,8,0,0,0-11.84-10.76L143.24,99.34,102.75,35.71A8,8,0,0,0,96,32H48a8,8,0,0,0-6.75,12.3l62.6,98.37-61.77,68a8,8,0,1,0,11.84,10.76l58.84-64.72,40.49,63.63A8,8,0,0,0,160,224h48a8,8,0,0,0,6.75-12.29ZM164.39,208,62.57,48h29L193.43,208Z"></path></svg>
@@ -51,10 +52,10 @@ export default function Home() {
               <div
                 className="mt-10 flex"
               >
-                <Link href="/editor" className="inline-flex h-10 items-center justify-center gap-1 rounded-xl bg-neutral-950 px-4 pr-5 font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-neutral-50 dark:text-neutral-950 dark:hover:bg-neutral-200">
+                <ViewTransitionLink href="/editor" className="inline-flex h-10 items-center justify-center gap-1 rounded-xl bg-neutral-950 px-4 pr-5 font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-neutral-50 dark:text-neutral-950 dark:hover:bg-neutral-200">
                   Start editing
                   <ArrowRight size={16} />
-                </Link>
+                </ViewTransitionLink>
               </div>
             </div>
             <Cluster />

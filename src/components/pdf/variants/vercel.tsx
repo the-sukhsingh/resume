@@ -40,6 +40,18 @@ const tw = createTw({
 
 const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
 
+    if (!data) {
+        return (
+            <Document>
+                <Page size="A4" style={tw(cn("font-default text-sm text-white bg-[#040404]"))}>
+                    <ViewR style={tw(cn("flex-1 justify-center items-center"))}>
+                        Loading...
+                    </ViewR>
+                </Page>
+            </Document>
+        )
+    }
+
     const {
         personalInfo,
         achievements,
