@@ -16,7 +16,7 @@ export default function Home() {
 
             <FileText className="text-white" />
           </span>
-          <h1 className="font-cormorant  text-3xl font-semibold">Resume Editor</h1>
+          <h1 className="font-cormorant  text-3xl font-semibold">Resumely</h1>
         </ViewTransitionLink>
         <div className="flex gap-0 items-center justify-end">
           <Link href="https://x.com/thesukhjitbajwa" target="_blank" className="text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors mr-4">
@@ -42,7 +42,7 @@ export default function Home() {
               <h1
                 className="mt-8 max-w-3xl font-serif text-5xl leading-[0.94] tracking-tight text-neutral-500 dark:text-neutral-600 sm:text-6xl lg:text-[4rem]"
               >
-                Build Resume That <span className="text-black dark:text-white font-bold">Stands </span>out
+                Build Résumé That <span className="text-black dark:text-white font-bold">Stands </span>out
               </h1>
               <p
                 className="mt-6 max-w-xl text-base leading-7 text-neutral-600 dark:text-neutral-400 sm:text-lg"

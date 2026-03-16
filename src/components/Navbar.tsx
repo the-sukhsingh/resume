@@ -12,7 +12,7 @@ const Navbar = () => {
 
                     <FileText className="text-white" />
                 </span>
-                <h1 className="font-cormorant text-3xl font-semibold">Resume Editor</h1>
+                <h1 className="font-cormorant text-3xl font-semibold">Resumely</h1>
             </ViewTransitionLink>
 
             <ModeToggle />

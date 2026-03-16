@@ -62,10 +62,10 @@ const geistMono = Geist_Mono({
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://resumely.sukhjitsingh.me'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://resumely.tech'),
   title: {
-    default: "Free Resume Builder & CV Maker | Resume Editor",
-    template: "%s | Resume Editor"
+    default: "Resumely - Create Resume that stands out",
+    template: "%s | Resumely"
   },
   description: "Build a professional, ATS-friendly resume in minutes. Features live preview, customizable templates, and instant PDF download. Perfect for software engineers, marketers, and all job seekers.",
   keywords: [
@@ -95,24 +95,23 @@ export const metadata: Metadata = {
     "free download resume", "resume privacy", "secure resume builder", "react resume builder",
     "open source resume templates", "NextJS resume builder"
   ],
-  authors: [{ name: "Resume Editor" }],
-  creator: "Resume Editor",
-  publisher: "Resume Editor",
+  authors: [{ name: "Sukhjit Singh" }],
+  creator: "Sukhjit Singh",
+  publisher: "Sukhjit Singh",
   openGraph: {
-    title: 'Free Resume Builder & CV Maker | Resume Editor',
+    title: 'Resumely - Create Resume that stands out',
     description: 'Build a professional, ATS-friendly resume in minutes. Features live preview, customizable templates, and instant PDF download.',
     url: '/',
-    siteName: 'Resume Editor',
-    // Uncomment when you have an og-image:
+    siteName: 'Resumely',
     images: [{ url: '/og-image.png', width: 1920, height: 1080 }],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    creator: '@yourhandle',
-    title: 'Free Resume Builder & CV Maker | Resume Editor',
-    images: [`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/og-image.png`],
+    creator: '@thesukhjitbajwa',
+    title: 'Resumely - Create Resume that stands out',
+    images: [`${process.env.NEXT_PUBLIC_APP_URL || 'https://resumely.tech'}/og-image.png`],
     description: 'Build a professional, ATS-friendly resume in minutes. Features live preview, customizable templates, and instant PDF download.',
   },
   robots: {
