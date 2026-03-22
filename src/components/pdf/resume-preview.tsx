@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import PDFError from "./helper/pdf-error";
 import PDFLoading from "./helper/pdf-loading";
 import { Document, Page, pdfjs } from "react-pdf";
-import { ResumeData } from "@/types/resume";
+import { ResumeData, ResumeTemplate } from "@/types/resume";
 import { cloneDeep, debounce, isEqual } from "lodash";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -42,7 +42,7 @@ const PDFViewer = ({ url }: { url: string | null; }) => {
     );
 };
 
-const ResumePreview = ({ resumeData, theme }: { resumeData: ResumeData, theme: "classic" | "designer" | "vercel" }) => {
+const ResumePreview = ({ resumeData, theme }: { resumeData: ResumeData, theme: ResumeTemplate }) => {
     const [pdfError, setPdfError] = useState<string | null>(null);
     const [generatedPdfUrl, setGeneratedPdfUrl] = useState<string | null>(null);
     const [data, setData] = useState<ResumeData>(resumeData);

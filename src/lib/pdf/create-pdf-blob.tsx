@@ -1,9 +1,9 @@
-import { ClassicPdf, DesignerPdf, VercelPdf } from "@/components/pdf/variants";
-import { ResumeData } from "@/types/resume";
+import { variantRegistry } from "@/components/pdf/variants/registry";
+import { ResumeData, ResumeTemplate } from "@/types/resume";
 import { pdf } from "@react-pdf/renderer";
 
 interface CreatePdfBlobProps {
-  template: "vercel" | "classic" | "designer";
+  template: ResumeTemplate;
   resumeData: ResumeData;
   type?: "pdf" | "image";
 }
@@ -18,18 +18,7 @@ export const createPdfBlob = async ({ resumeData, template, type }: CreatePdfBlo
 };
 
 const getPdfTemplate = (template: CreatePdfBlobProps["template"]) => {
-  // if there is no template, fallback to default
-  if (!template) {
-    return DesignerPdf;
-  }
-
-  // else return the specified template
-  switch (template) {
-    case "vercel":
-      return VercelPdf;
-    case "classic":
-      return ClassicPdf;
-    default:
-      return DesignerPdf;
-  }
+  // if there is no template or the template isn't registered, fallback to default (designer)
+  const variant = variantRegistry[template as string as keyof typeof variantRegistry];
+  return variant ? variant.component : variantRegistry.designer.component;
 };

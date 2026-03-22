@@ -1,3 +1,7 @@
+import type { ResumeTemplate as RegistryTemplate } from '@/components/pdf/variants/registry';
+
+export type ResumeTemplate = RegistryTemplate;
+
 export interface PersonalInfo {
   fullName: string;
   headline?: string;

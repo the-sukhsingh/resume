@@ -1,11 +1,11 @@
 /**
  * Font and print utilities for resume printing with proper font loading
  */
+import { ResumeTemplate } from '@/types/resume';
 import React from 'react';
 
 // Define font families used in different themes
 const THEME_FONTS = {
-  classic: ['Inter', 'system-ui', 'sans-serif'],
   designer: ['Cormorant', 'League Spartan', 'Montserrat'],
   vercel: ['Geist', 'Geist Mono', 'system-ui']
 } as const;
@@ -156,7 +156,7 @@ function createFontFaceCSS(): string {
 /**
  * Preloads fonts for a specific theme
  */
-export async function preloadFontsForTheme(theme: 'classic' | 'designer' | 'vercel'): Promise<void> {
+export async function preloadFontsForTheme(theme: ResumeTemplate): Promise<void> {
   const themeFonts = THEME_FONTS[theme];
   const relevantFontFaces = FONT_FACES.filter(font => 
     themeFonts.some(themeFont => font.family.includes(themeFont))
@@ -206,7 +206,7 @@ export async function preloadFontsForTheme(theme: 'classic' | 'designer' | 'verc
 /**
  * Creates print-specific styles with embedded fonts
  */
-export function createPrintStyles(theme: 'classic' | 'designer' | 'vercel'): string {
+export function createPrintStyles(theme: ResumeTemplate): string {
   const fontCSS = createFontFaceCSS();
   
   return `
@@ -238,7 +238,7 @@ export function createPrintStyles(theme: 'classic' | 'designer' | 'vercel'): str
 export interface PrintConfig {
   contentRef: React.RefObject<HTMLDivElement | null>;
   documentTitle?: string;
-  theme: 'classic' | 'designer' | 'vercel';
+  theme: ResumeTemplate;
   onBeforePrint?: () => Promise<void> | void;
   onAfterPrint?: () => void;
 }

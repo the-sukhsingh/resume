@@ -22,10 +22,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { ResumeTemplate, variantRegistry } from '@/components/pdf/variants/registry';
 
 interface ManagerProps {
-    theme: "classic" | "designer" | "vercel";
-    onThemeChange: (theme: "classic" | "designer" | "vercel") => void;
+    theme: ResumeTemplate;
+    onThemeChange: (theme: ResumeTemplate) => void;
     onDownloadImage: () => void;
     onDownloadPdf: () => void;
     isDownloading: boolean;
@@ -37,15 +38,17 @@ const Manager: React.FC<ManagerProps> = ({ theme, onThemeChange, onDownloadImage
         < div className='bg-background flex items-center justify-between py-2 border-b border-x px-4' >
             <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">Theme</span>
-                <Select defaultValue={theme} onValueChange={(value) => onThemeChange(value as "classic" | "designer" | "vercel")}> 
+                <Select defaultValue={theme} onValueChange={(value) => onThemeChange(value as ResumeTemplate)}> 
                     <SelectTrigger className="w-30 focus-visible:ring-0">
                         <SelectValue  />
                     </SelectTrigger>
-                    <SelectContent className=''>
+                    <SelectContent>
                         <SelectGroup>
-                            <SelectItem value="designer">Designer</SelectItem>
-                            {/* <SelectItem value="classic">Classic</SelectItem> */}
-                            <SelectItem value="vercel">Vercel</SelectItem>
+                            {Object.entries(variantRegistry).map(([id, variant]) => (
+                                <SelectItem key={id} value={id}>
+                                    {variant.name}
+                                </SelectItem>
+                            ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>

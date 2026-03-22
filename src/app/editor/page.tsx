@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ResumeData } from '@/types/resume';
+import { ResumeData, ResumeTemplate } from '@/types/resume';
 import { EditorForm } from '@/components/resume/EditorForm';
 import { ResizablePanels } from '@/components/resume/ResizablePanels';
 import dynamic from 'next/dynamic';
@@ -48,7 +48,7 @@ const EditorPage = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
   const [isDownloading, setIsDownloading] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<'classic' | 'designer' | 'vercel'>('vercel');
+  const [currentTheme, setCurrentTheme] = useState<ResumeTemplate>('vercel');
   // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);

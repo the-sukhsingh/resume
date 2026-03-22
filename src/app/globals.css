@@ -211,8 +211,8 @@ body {
 } 
 /* Global view-transition timing */
 ::view-transition-group(root) {
-  animation-duration: 0.5s;
-  animation-timing-function: ease-in-out;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.61, 0.03, 0.08, 1);
 }
 
 /* Light mode enter */
