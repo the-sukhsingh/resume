@@ -176,6 +176,7 @@ export const MONTSERRAT_FONT: PdfFont[] = [
   },
 ];
 
+// Inter fonts
 export const INTER_FONT: PdfFont[] = [
   {
     src: "/fonts/inter/Inter-Regular.ttf",
@@ -242,7 +243,7 @@ export const INTER_FONT: PdfFont[] = [
   },
 ];
 
-
+// Geist Mono fonts
 export const GEIST_MONO_FONT: PdfFont[] = [
   {
     src: "/fonts/geistmono/GeistMono-Thin.ttf",
@@ -282,6 +283,7 @@ export const GEIST_MONO_FONT: PdfFont[] = [
   },
 ];
 
+// Geist fonts
 export const GEIST_FONT: PdfFont[] = [
   {
     src: "/fonts/geist/Geist-Thin.ttf",
@@ -321,8 +323,7 @@ export const GEIST_FONT: PdfFont[] = [
   },
 ];
 
-
-
+// Cormorant fonts
 export const CORMORANT_FONT: PdfFont[] = [
   {
     src: "/fonts/Cormorant/Cormorant-Light.ttf",
@@ -371,7 +372,7 @@ export const CORMORANT_FONT: PdfFont[] = [
   },
 ];
 
-
+// Safira March font
 export const SAFIRA_MARCH_FONT: PdfFont[] = [
   {
     src: "/fonts/safiramarch/Safira-March-1.otf",

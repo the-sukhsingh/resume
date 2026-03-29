@@ -76,6 +76,7 @@ export interface Education {
 
 
 export interface ResumeData {
+  darkTheme: boolean;
   personalInfo: PersonalInfo;
   summary: string;
   social: Social;
@@ -86,4 +87,10 @@ export interface ResumeData {
   languages: string[];
   certificates: Certificate[];
   education: Education[];
+  declaration?: {
+    show: boolean;
+    declaration: string;
+    dated: boolean;
+    location?: string
+  }
 }

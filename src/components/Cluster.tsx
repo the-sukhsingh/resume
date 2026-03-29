@@ -27,12 +27,22 @@ const Cluster = () => {
                     >
 
                         {/* Center Solid Cards */}
-                        <div className='absolute inset-0 flex items-center justify-center gap-8 z-50'>
+                        <div className='absolute inset-0 flex items-center justify-center gap-8 z-50 ' >
+                            <div className='absolute top-4 left-1/2 text-sm text-primary'>
+                                Click Here <br /> to view
+                                <svg className='absolute size-8 left-1/2' width="38" height="109" viewBox="0 0 38 109" fill="none" xmlns="http://www.w3.org/2000/svg" strokeWidth={4}>
+                                    <path d="M0.83783 0.401794C0.83783 0.401794 35.8637 26.2713 37.3378 50.4018C38.9496 76.7852 0.83783 107.402 0.83783 107.402" stroke="currentColor" />
+                                    <path d="M13.3378 104.902L1.7252 107.582C1.05006 107.737 0.424915 107.176 0.507465 106.488L1.83776 95.4018" stroke="currentColor" />
+                                </svg>
+
+
+
+                            </div>
                             <SolidCard onClick={() => setFullScreenImage("/images/1.png")}>
-                                <Image src={"/images/1.png"} alt='1' fill className='object-cover' />
+                                <Image src={"/images/1.png"} alt='1' fill className='object-cover rounded-lg' />
                             </SolidCard>
-                            <SolidCard onClick={() => setFullScreenImage("/images/2.png")}>
-                                <Image src={"/images/2.png"} alt='2' fill className='object-cover' />
+                            <SolidCard onClick={() => setFullScreenImage("/images/2.png")} >
+                                <Image src={"/images/2.png"} alt='2' fill className='object-cover rounded-lg' />
                             </SolidCard>
                         </div>
 
@@ -100,7 +110,7 @@ const Cluster = () => {
 
 const DashedCard = ({ className, children }: { className?: string, children?: React.ReactNode }) => {
     return (
-        <div className={`z-0 w-30 h-40 bg-white dark:bg-[#111111] border-2 border-dashed border-neutral-300 dark:border-neutral-800 rounded-xl flex items-center justify-center opacity-75 ${className}`}>
+        <div className={`z-0 w-30 h-40 bg-[repeating-linear-gradient(315deg,rgba(0,0,0,0.3)_0,rgba(0,0,0,0.3)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] dark:bg-[repeating-linear-gradient(315deg,rgba(255,255,255,0.2)_0,rgba(255,255,255,0.2)_1px,transparent_0,transparent_50%)] border-2 border-dashed border-neutral-300 dark:border-neutral-800 rounded-xl flex items-center justify-center opacity-75 ${className}`}>
             {children}
         </div>
     )
@@ -114,7 +124,7 @@ const SolidCard = ({ children, ...props }: HTMLMotionProps<"div">) => {
                 whileTap={{ scale: 0.98 }}
                 exit={{ opacity: 0 }}
                 transition={{ ease: "easeInOut", duration: 0.3 }}
-                className='w-28 h-40 aspect-9/16 bg-neutral-100 dark:bg-[#161616] border border-neutral-300 dark:border-neutral-800 rounded-lg relative overflow-hidden cursor-pointer shadow-md focus-visible:outline-none focus-visible:ring-0' 
+                className='w-28 h-40 aspect-9/16 bg-neutral-100 dark:bg-[#161616] border border-neutral-300 dark:border-neutral-800 rounded-lg relative cursor-pointer shadow-md focus-visible:outline-none focus-visible:ring-0 '
                 {...props}
             >
                 {children}

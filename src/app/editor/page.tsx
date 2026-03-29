@@ -6,7 +6,6 @@ import { EditorForm } from '@/components/resume/EditorForm';
 import { ResizablePanels } from '@/components/resume/ResizablePanels';
 import dynamic from 'next/dynamic';
 import Manager from '@/components/pdf/manager';
-import { Save } from 'lucide-react';
 import { createPdfBlob } from '@/lib/pdf/create-pdf-blob';
 import { createBlobUrl } from '@/lib/pdf/create-blob-url';
 import { createPdfToImage } from '@/lib/pdf/create-pdf-to-image';
@@ -18,6 +17,7 @@ const STORAGE_KEY = 'resume-data';
 
 
 const initialData: ResumeData = {
+  darkTheme: false,
   personalInfo: {
     fullName: '',
     headline: '',
@@ -41,20 +41,44 @@ const initialData: ResumeData = {
   skills: [],
   certificates: [],
   education: [],
-  languages: []
+  languages: [],
+  declaration: {
+    show: false,
+    declaration: 'I hereby declare that the information provided above is true and correct to the best of my knowledge',
+    dated: false,
+    location: ''
+  }
 };
 
 const EditorPage = () => {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
   const [isDownloading, setIsDownloading] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<ResumeTemplate>('vercel');
+  const [currentTheme, setCurrentTheme] = useState<ResumeTemplate>('classic');
   // Load from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
-        setResumeData(JSON.parse(saved));
+        const parsedData = JSON.parse(saved);
+        // Merge with initialData to ensure all schema fields exist
+        const mergedData: ResumeData = {
+          ...initialData,
+          ...parsedData,
+          personalInfo: { ...initialData.personalInfo, ...parsedData.personalInfo },
+          social: { ...initialData.social, ...parsedData.social },
+          experience: Array.isArray(parsedData.experience) ? parsedData.experience : initialData.experience,
+          projects: Array.isArray(parsedData.projects) ? parsedData.projects : initialData.projects,
+          achievements: Array.isArray(parsedData.achievements) ? parsedData.achievements : initialData.achievements,
+          skills: Array.isArray(parsedData.skills) ? parsedData.skills : initialData.skills,
+          certificates: Array.isArray(parsedData.certificates) ? parsedData.certificates : initialData.certificates,
+          education: Array.isArray(parsedData.education) ? parsedData.education : initialData.education,
+          languages: Array.isArray(parsedData.languages) ? parsedData.languages : initialData.languages,
+          declaration: typeof parsedData.declaration === 'object' && parsedData.declaration !== null
+            ? { ...initialData.declaration, ...parsedData.declaration }
+            : initialData.declaration,
+        };
+        setResumeData(mergedData);
       } catch (error) {
         console.error('Failed to parse saved resume data:', error);
       }
@@ -105,6 +129,16 @@ const EditorPage = () => {
     } finally {
       setIsDownloading(false);
     }
+  };
+
+  const handleViewPdf = async () => {
+    const blob = await createPdfBlob({ resumeData: resumeData, template: currentTheme });
+    const url = createBlobUrl({ blob });
+    window.open(url, '_blank');
+  }
+
+  const handleVercelThemeChange = (value: boolean) => {
+    setResumeData((data) => ({ ...data, darkTheme: value }))
   }
 
 
@@ -114,7 +148,7 @@ const EditorPage = () => {
       <Navbar />
 
 
-      <Manager isDownloading={isDownloading} theme={currentTheme} onThemeChange={setCurrentTheme} onDownloadImage={handleDownloadImage} onDownloadPdf={handleDownloadPdf} />
+      <Manager isDownloading={isDownloading} theme={currentTheme} onThemeChange={setCurrentTheme} onDownloadImage={handleDownloadImage} onDownloadPdf={handleDownloadPdf} currentResumeTheme={resumeData.darkTheme} handleVercelThemeChange={handleVercelThemeChange} handleViewPdf={handleViewPdf} />
 
       {/* Split View */}
       <ResizablePanels

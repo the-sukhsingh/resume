@@ -84,11 +84,11 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
             fontFamily: "League Spartan"
           }]}>
             <Text className="text-[8px]">{personalInfo.headline || ""}</Text>
-            <Link src={String(url) || "/editor"} style={[tw(cn("text-black text-[8px]")), {
+            {social.website && (<Link src={String(url) || "/editor"} style={[tw(cn("text-black text-[8px]")), {
               textDecoration: "none"
             }]} >{
                 url.hostname
-              } </Link>
+              } </Link>)}
           </ViewR>
         </View>
 
@@ -97,7 +97,7 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
           {/* Left Column - Summary */}
           <View className="w-1/3 justify-center items-center">
             <Text className="text-xs leading-relaxed text-justify">
-              {summary || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pharetra in lorem at laoreet. Donec hendrerit libero eget est tempor, quis tempus arcu elementum. In elementum elit at dui tristique feugiat."}
+              {summary}
             </Text>
           </View>
 
@@ -107,38 +107,43 @@ const DesignerPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
             <View
               className="w-48 h-48 overflow-hidden flex items-center justify-center rounded-lg"
             >
-              <Image
+              {personalInfo.image && (<Image
                 src={personalInfo.image || ""}
                 style={tw(cn("w-full h-full object-cover "))}
-              />
-
+              />)}
             </View>
           </View>
 
           {/* Right Column - Contact */}
           <View className="w-1/3 text-xs gap-2 justify-center">
 
-            <View className="pt-2">
-              <Text className=" font-semibold mb-1" font="League Spartan">EMAIL</Text>
-              <Link src={social.email ? `mailto:${social.email}` : "/editor"} style={[tw(cn("text-black")), {
-                textDecoration: "none"
-              }]} >
-                <Text>{social.email || "you@mail.com"}</Text>
-              </Link>
-            </View>
-            <View className="border-t border-black pt-2">
-              <Text className="font-semibold mb-1" font="League Spartan">PHONE</Text>
-              <Link src={personalInfo.phone ? `tel:${personalInfo.phone}` : "/editor"} style={[tw(cn("text-black")), {
-                textDecoration: "none"
-              }]} >
-                <Text>{personalInfo.phone || "+1 (555) 123-4567"}</Text>
-              </Link>
-            </View>
-
-            <View className="border-t border-black pt-2">
-              <Text className="font-semibold mb-1" font="League Spartan">ADDRESS</Text>
-              <Text>{personalInfo.location || "123 ANYWHERE ST., ANY CITY"}, {personalInfo.country || "Canada"} </Text>
-            </View>
+            {social.email && (
+              <View className="py-2 border-b border-black">
+                <Text className=" font-semibold mb-1" font="League Spartan">EMAIL</Text>
+                <Link src={`mailto:${social.email}`} style={[tw(cn("text-black")), {
+                  textDecoration: "none"
+                }]} >
+                  <Text>{social.email}</Text>
+                </Link>
+              </View>
+            )}
+            {personalInfo.phone && (
+              <View className="py-2 border-b border-black">
+                <Text className="font-semibold mb-1" font="League Spartan">PHONE</Text>
+                <Link src={`tel:${personalInfo.phone}`} style={[tw(cn("text-black")), {
+                  textDecoration: "none"
+                }]} >
+                  <Text>{personalInfo.phone}</Text>
+                </Link>
+              </View>
+            )}
+            {
+              (personalInfo.location || personalInfo.country) && (
+                <View className="">
+                  <Text className="font-semibold mb-1" font="League Spartan">ADDRESS</Text>
+                  <Text>{personalInfo.location}, {personalInfo.country} </Text>
+                </View>
+              )}
           </View>
         </View>
 

@@ -53,15 +53,15 @@ export default function Home() {
                 className="mt-10 flex gap-2"
               >
                 <div className="relative">
-                  <span className="absolute -inset-y-px inset-x-0 rounded-[15px] z-10 bg-linear-to-b from-neutral-600 dark:from-neutral-200 to-transparent"></span>
+                  <span className="absolute -inset-y-px -inset-x-px rounded-[15px] z-10 bg-linear-to-b from-neutral-600 dark:from-neutral-500 to-transparent"></span>
 
-                  <ViewTransitionLink href="/editor" className="inline-flex h-10 items-center justify-center gap-1 rounded-xl bg-neutral-950 pl-5 pr-4 font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-neutral-50 dark:text-neutral-950 dark:hover:bg-neutral-200 relative z-50 shadow-[0_0_1px_0_inset_rgba(255,255,255,1)] dark:shadow-[0_0_1px_0_inset_rgba(0,0,0,1)]">
+                  <ViewTransitionLink href="/editor" className="inline-flex h-10 items-center justify-center gap-1 rounded-xl bg-neutral-950 pl-5 pr-4 font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-neutral-50 dark:text-neutral-950 dark:hover:bg-neutral-200 relative z-50">
                     Start editing
                     <ArrowRight size={16} />
                   </ViewTransitionLink>
                 </div>
                 <div className="relative">
-                  <span className="absolute -inset-y-px inset-x-0 rounded-[15px] z-10 bg-linear-to-b from-neutral-200 dark:from-neutral-600 to-transparent"></span>
+                  <span className="absolute -inset-y-px -inset-x-px rounded-[15px] z-10 bg-linear-to-b from-neutral-200 dark:from-neutral-600 to-transparent"></span>
 
                   <Link href="https://github.com/the-sukhsingh/resume" target="_blank" className="inline-flex h-10 items-center justify-center gap-1 rounded-xl bg-neutral-100 pl-5 pr-4 font-medium text-black transition-colors hover:bg-neutral-200 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-900 relative z-50 shadow-[0_0_1px_0_inset_rgba(255,255,255,1)] dark:shadow-[0_0_1px_0_inset_rgba(0,0,0,1)]">
                     Github

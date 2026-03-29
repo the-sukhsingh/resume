@@ -15,6 +15,7 @@ import { AchievementModal } from '@/components/resume/AchievementModal';
 import { CertificateModal } from '@/components/resume/CertificateModal';
 import { EducationModal } from '@/components/resume/EducationModal';
 import CollapsibleSection from './CollapseSection';
+import { Switch } from '@/components/ui/switch';
 
 interface EditorFormProps {
   data: ResumeData;
@@ -146,6 +147,20 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
 
   const updateLanguages = (languages: string[]) => {
     onChange({ ...data, languages });
+  };
+
+  const updateDeclaration = (field: keyof NonNullable<ResumeData['declaration']>, value: string | boolean) => {
+    onChange({
+      ...data,
+      declaration: {
+        show: data.declaration?.show ?? false,
+        declaration: data.declaration?.declaration ?? '',
+        dated: data.declaration?.dated ?? false,
+        location: data.declaration?.location ?? '',
+        ...data.declaration,
+        [field]: value
+      }
+    });
   };
 
   // Experience handlers
@@ -335,7 +350,7 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
 
   return (
     <div className="h-full overflow-y-auto nobar overscroll-none bg-background overflow-hidden rounded-bl-md">
-      <div className="space-y-0">
+      <div className="space-y-0 pb-16">
         {/* Personal Info - Fixed at top */}
         <CollapsibleSection
           title="Personal Information"
@@ -709,6 +724,57 @@ export const EditorForm: React.FC<EditorFormProps> = ({ data, onChange }) => {
                 <Plus className="w-4 h-4" /> Add Certification
               </Button>
             </div>
+          </div>
+        </CollapsibleSection>
+        <CollapsibleSection
+          key="declaration"
+          title="Declaration"
+          isOpen={openSection === 'declaration'}
+          onToggle={() => toggleSection('declaration')}
+          sectionKey="declaration"
+        >
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="showDeclaration" className="text-sm">Show Declaration</Label>
+              <Switch
+                id="showDeclaration"
+                checked={data.declaration?.show ?? false}
+                onCheckedChange={(checked) => updateDeclaration('show', checked)}
+              />
+            </div>
+            {data.declaration?.show && (
+              <>
+                <div>
+                  <Label htmlFor="declarationText" className="text-xs text-primary/90 mb-1">Declaration Text</Label>
+                  <Textarea
+                    id="declarationText"
+                    value={data.declaration?.declaration ?? ''}
+                    onChange={(e) => updateDeclaration('declaration', e.target.value)}
+                    placeholder="I hereby declare that the above information is true to the best of my knowledge..."
+                    rows={4}
+                    className="resize-none"
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="showDate" className="text-sm">Include Date</Label>
+                  <Switch
+                    id="showDate"
+                    checked={data.declaration?.dated ?? false}
+                    onCheckedChange={(checked) => updateDeclaration('dated', checked)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="declarationLocation" className="text-xs text-primary/90 mb-1">Location (Optional)</Label>
+                  <Input
+                    id="declarationLocation"
+                    value={data.declaration?.location ?? ''}
+                    onChange={(e) => updateDeclaration('location', e.target.value)}
+                    placeholder="City, Country"
+                    className="h-9"
+                  />
+                </div>
+              </>
+            )}
           </div>
         </CollapsibleSection>
       </div>

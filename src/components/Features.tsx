@@ -23,7 +23,7 @@ const Features = () => {
                             <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200/50 dark:border-neutral-700/50 bg-white/50 dark:bg-black/50 px-3 py-1 shadow-sm backdrop-blur-md mb-6">
                                 <Layout className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
                                 <span className="text-xs font-medium uppercase tracking-wider text-neutral-700 dark:text-neutral-300">Live Editor</span>
-                            </div>
+                            </div>1
                             <h3 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">Edit in real-time, instantly.</h3>
                             <p className="text-lg text-neutral-600 dark:text-neutral-400">
                                 Experience a fluid workflow. See exactly how your resume translates to the page as you type.

@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { Button } from '../ui/button';
-import { ChevronDownIcon, Download, Image, Printer } from 'lucide-react';
+import { ChevronDownIcon } from 'lucide-react';
 import {
     ButtonGroup,
 } from "@/components/ui/button-group"
@@ -23,6 +23,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { ResumeTemplate, variantRegistry } from '@/components/pdf/variants/registry';
+import { Switch } from '../ui/switch';
 
 interface ManagerProps {
     theme: ResumeTemplate;
@@ -30,17 +31,20 @@ interface ManagerProps {
     onDownloadImage: () => void;
     onDownloadPdf: () => void;
     isDownloading: boolean;
+    currentResumeTheme: boolean;
+    handleVercelThemeChange: (value: boolean) => void;
+    handleViewPdf: () => void
 }
 
-const Manager: React.FC<ManagerProps> = ({ theme, onThemeChange, onDownloadImage, onDownloadPdf, isDownloading }) => {
+const Manager: React.FC<ManagerProps> = ({ theme, onThemeChange, onDownloadImage, onDownloadPdf, isDownloading, handleVercelThemeChange, currentResumeTheme, handleViewPdf }) => {
     {/* Actions */ }
     return (
         < div className='bg-background flex items-center justify-between py-2 border-b border-x px-4' >
             <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">Theme</span>
-                <Select defaultValue={theme} onValueChange={(value) => onThemeChange(value as ResumeTemplate)}> 
+                <Select defaultValue={theme as string} onValueChange={(value) => onThemeChange(value as ResumeTemplate)}>
                     <SelectTrigger className="w-30 focus-visible:ring-0">
-                        <SelectValue  />
+                        <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
@@ -52,6 +56,17 @@ const Manager: React.FC<ManagerProps> = ({ theme, onThemeChange, onDownloadImage
                         </SelectGroup>
                     </SelectContent>
                 </Select>
+                {
+                    theme === "vercel" && (
+                        <>
+                            <span className="text-sm">Light Theme</span>
+                            <Switch checked={!!currentResumeTheme} onCheckedChange={(value) => {
+                                handleVercelThemeChange(value)
+                            }}>
+                            </Switch>
+                            <span className="text-sm">Dark Theme</span>
+                        </>
+                    )}
             </div>
             <div className='flex gap-4 items-center '>
 
@@ -60,14 +75,16 @@ const Manager: React.FC<ManagerProps> = ({ theme, onThemeChange, onDownloadImage
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" className="pl-2!">
-                                <ChevronDownIcon/>
+                                <ChevronDownIcon />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="">
-                            
+
                             <DropdownMenuGroup>
+                                <DropdownMenuItem onSelect={handleViewPdf} >
+                                    View Pdf
+                                </DropdownMenuItem>
                                 <DropdownMenuItem onSelect={onDownloadImage} disabled={isDownloading} className=''>
-                                    {/* <Image className="w-4 h-4 mr-2" /> */}
                                     {isDownloading ? 'Downloading...' : 'Download Image'}
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
