@@ -70,7 +70,7 @@ const ClassicPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
             creator={data.personalInfo.fullName || "Unknown"}
             producer="Resumely"
         >
-            <Page size="A4" style={tw(cn("font-default text-sm text-black bg-white px-8 py-10"))}>
+            <Page size="A4" style={tw(cn("font-default text-sm text-black bg-white px-8 py-6"))}>
                 {/* Header Section */}
                 <View className=" text-center">
                     <Heading className="text-3xl font-bold tracking-tight uppercase mb-3">{personalInfo.fullName || "Your Name"}</Heading>
@@ -198,14 +198,14 @@ const ClassicPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                             <SectionHeading>Certifications</SectionHeading>
                             {certificates.map((cert) => (
                                 <ViewR key={cert.id} style={tw("mb-3 flex flex-row justify-between items-start")}>
-                                    <View>
+                                    <View className='flex flex-col gap-1 mb-0.5'>
 
                                         {cert.link ? (
-                                            <LinkR src={cert.link} className="text-xs font-bold mb-0.5">{cert.name}</LinkR>
+                                            <LinkR src={cert.link} className="text-sm">{cert.name}</LinkR>
                                         ) : (
-                                            <Text className="text-xs font-bold mb-0.5">{cert.name}</Text>
+                                            <Text className="text-sm">{cert.name}</Text>
                                         )}
-                                        <Text className="text-2xs font-normal text-neutral-800">{cert.issuer}</Text>
+                                        <Text className="text-xs font-normal text-neutral-800">{cert.issuer}</Text>
                                     </View>
                                     <Text className="text-2xs font-normal text-neutral-500">{cert.date}</Text>
                                 </ViewR>
@@ -219,7 +219,7 @@ const ClassicPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
                             <SectionHeading>Achievements</SectionHeading>
                             {achievements.map((achievement) => (
                                 <ViewR key={achievement.id} style={tw("mb-3")}>
-                                    <Text className="text-xs font-bold mb-0.5">{achievement.title}</Text>
+                                    <Text className="text-xs mb-0.5">{achievement.title}</Text>
                                     <Text className="text-2xs font-normal text-neutral-800">{achievement.description}</Text>
                                 </ViewR>
                             ))}

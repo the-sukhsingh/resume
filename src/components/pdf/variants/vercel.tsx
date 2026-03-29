@@ -496,7 +496,48 @@ const VercelPdf: React.FC<{ data: ResumeData }> = ({ data }) => {
 
                 </View>) : null}
 
+                {/* Declaration Section */}
+                {data.declaration?.show && data.declaration.declaration && (
+                    <View className="border-b px-5 py-4">
+                        <Heading className="mb-3">
+                            Declaration
+                        </Heading>
+                        <Text className="text-sm leading-6 mb-3">
+                            {data.declaration.declaration}
+                        </Text>
+                        {(data.declaration.dated || data.declaration.location) && (
+                            <View className="flex-row justify-between items-center">
+                                {data.declaration.location && (
+                                    <TextR style={[tw(cn("text-[8px] uppercase tracking-[0.16em] font-geistmono",
+                                        darkTheme ? "text-neutral-300" : "text-neutral-700"
+                                    )),
+                                    {
+                                        letterSpacing: "0.16rem",
+                                        fontFamily: "GeistMono",
+                                    }
+                                    ]}>
+                                        Place: {data.declaration.location}
+                                    </TextR>
+                                )}
+                                {data.declaration.dated && (
+                                    <TextR style={[tw(cn("text-[8px] uppercase tracking-[0.16em] font-geistmono",
+                                        darkTheme ? "text-neutral-300" : "text-neutral-700"
+                                    )),
+                                    {
+                                        letterSpacing: "0.16rem",
+                                        fontFamily: "GeistMono",
+                                    }
+                                    ]}>
+                                        Date: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                                    </TextR>
+                                )}
+                            </View>
+                        )}
+                    </View>
+                )}
+
                 {
+                    (data.declaration?.show && !data?.declaration?.show) &&
                     (experience.length !== 0 || projects.length !== 0) &&
                     (skills.length !== 0 || languages.length !== 0) &&
                     (certificates.length !== 0 || achievements.length !== 0 || education.length !== 0) &&
